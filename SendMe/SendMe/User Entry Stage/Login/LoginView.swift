@@ -33,7 +33,7 @@ class LoginView: UIViewController {
         
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
-        imageView.image = UIImage(named: "image4")
+        imageView.image = UIImage(named: "image3")
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageContainerView.addSubview(imageView)
