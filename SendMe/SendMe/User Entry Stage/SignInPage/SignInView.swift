@@ -172,7 +172,10 @@ class SignInView: UIViewController {
         viewModel.onNavigationRequested = { [weak self] action in
             switch action {
             case .existingUserSignIn:
-                break
+                let loginView = LoginView()
+                let navigationController = UINavigationController(rootViewController: loginView)
+                navigationController.modalPresentationStyle = .fullScreen
+                self?.present(navigationController, animated: true)
             default:
                 break
             }
