@@ -19,7 +19,7 @@ class SignInView: UIViewController {
         view.backgroundColor = .white
         
         let logoLabel = UILabel()
-        logoLabel.text = "Revifly"
+        logoLabel.text = "SendMe"
         logoLabel.font = UIFont.boldSystemFont(ofSize: 28)
         logoLabel.textColor = .black
         logoLabel.translatesAutoresizingMaskIntoConstraints = false
