@@ -1,6 +1,6 @@
 import UIKit
 
-class EmailSignUpView: UIViewController {
+final class EmailSignUpView: UIViewController {
     
     private let viewModel = EmailSignUpViewModel()
     private var emailTextField: UITextField!

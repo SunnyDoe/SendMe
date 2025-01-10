@@ -1,6 +1,6 @@
 import UIKit
 
-class PasswordView: UIViewController {
+final class PasswordView: UIViewController {
     private let viewModel: PasswordViewModel
     private var passwordTextField: UITextField!
     private var continueButton: UIButton!

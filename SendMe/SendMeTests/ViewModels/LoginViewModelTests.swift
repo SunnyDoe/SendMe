@@ -2,7 +2,7 @@ import XCTest
 @testable import SendMe
 import FirebaseAuth
 
-class LoginViewModelTests: XCTestCase {
+final class LoginViewModelTests: XCTestCase {
     var sut: LoginViewModel!
     
     override func setUp() {

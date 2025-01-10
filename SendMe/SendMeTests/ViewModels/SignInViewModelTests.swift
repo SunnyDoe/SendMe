@@ -1,8 +1,8 @@
 import XCTest
 @testable import SendMe
 
-class SignInViewModelTests: XCTestCase {
-    var sut: SignInViewModel! 
+final class SignInViewModelTests: XCTestCase {
+    private var sut: SignInViewModel! 
     
     override func setUp() {
         super.setUp()

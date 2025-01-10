@@ -1,7 +1,7 @@
 import XCTest
 @testable import SendMe
 
-class SignInViewTests: XCTestCase {
+final class SignInViewTests: XCTestCase {
     var sut: SignInView!
     
     override func setUp() {

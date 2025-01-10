@@ -1,6 +1,6 @@
 import Foundation
 
-class EmailSignUpViewModel {
+final class EmailSignUpViewModel {
     struct ViewState {
         var isEmailValid: Bool = false
         var errorMessage: String?

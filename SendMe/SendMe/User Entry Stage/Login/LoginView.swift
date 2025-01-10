@@ -2,7 +2,7 @@ import UIKit
 import SwiftUI
 import FirebaseAuth
 
-class LoginView: UIViewController {
+final class LoginView: UIViewController {
     private let viewModel = LoginViewModel()
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
     private var emailField: UITextField!

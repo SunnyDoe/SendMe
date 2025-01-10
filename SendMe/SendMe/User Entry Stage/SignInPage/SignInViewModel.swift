@@ -1,6 +1,6 @@
 import Foundation
 
-class SignInViewModel {
+final class SignInViewModel {
     enum NavigationAction {
         case emailSignUp
         case appleSignIn

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SplashViewModel {
+final class SplashViewModel {
     var onSplashComplete: (() -> Void)?
     
     func start() {

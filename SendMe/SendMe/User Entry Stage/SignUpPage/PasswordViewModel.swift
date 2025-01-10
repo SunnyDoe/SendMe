@@ -1,7 +1,7 @@
 import Foundation
 import FirebaseAuth
 
-class PasswordViewModel {
+final class PasswordViewModel {
     struct ViewState {
         var passwordCriteria: [PasswordCriteria: Bool]
         var isButtonEnabled: Bool

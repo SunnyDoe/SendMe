@@ -7,8 +7,8 @@
 
 import UIKit
 
-class SignInView: UIViewController {
-     let viewModel = SignInViewModel()
+final class SignInView: UIViewController {
+    private let viewModel = SignInViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -162,15 +162,15 @@ class SignInView: UIViewController {
         }
     }
     
-    @objc func emailSignInTapped() {
+    @objc private func emailSignInTapped() {
         viewModel.navigateToEmailSignUp()
     }
     
-    @objc func appleSignInTapped() {
+    @objc private func appleSignInTapped() {
         viewModel.handleAppleSignIn()
     }
     
-    @objc func signInTapped() {
+    @objc private func signInTapped() {
         viewModel.handleExistingUserSignIn()
     }
 }
