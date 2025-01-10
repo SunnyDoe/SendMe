@@ -8,11 +8,12 @@
 import UIKit
 
 class SignInView: UIViewController {
-    private let viewModel = SignInViewModel()
+     let viewModel = SignInViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupCallbacks()
     }
     
     private func setupUI() {
@@ -143,43 +144,33 @@ class SignInView: UIViewController {
         
     }
     
-    @objc private func emailSignInTapped() {
+    private func setupCallbacks() {
         viewModel.onNavigationRequested = { [weak self] action in
             switch action {
             case .emailSignUp:
                 let emailSignUpView = EmailSignUpView()
                 self?.navigationController?.pushViewController(emailSignUpView, animated: true)
-            default:
-                break
-            }
-        }
-        viewModel.navigateToEmailSignUp()
-    }
-    
-    @objc private func appleSignInTapped() {
-        viewModel.onNavigationRequested = { [weak self] action in
-            switch action {
             case .appleSignIn:
+                // Handle Apple sign in
                 break
-            default:
-                break
-            }
-        }
-        viewModel.handleAppleSignIn()
-    }
-    
-    @objc private func signInTapped() {
-        viewModel.onNavigationRequested = { [weak self] action in
-            switch action {
             case .existingUserSignIn:
                 let loginView = LoginView()
                 let navigationController = UINavigationController(rootViewController: loginView)
                 navigationController.modalPresentationStyle = .fullScreen
                 self?.present(navigationController, animated: true)
-            default:
-                break
             }
         }
+    }
+    
+    @objc func emailSignInTapped() {
+        viewModel.navigateToEmailSignUp()
+    }
+    
+    @objc func appleSignInTapped() {
+        viewModel.handleAppleSignIn()
+    }
+    
+    @objc func signInTapped() {
         viewModel.handleExistingUserSignIn()
     }
 }
