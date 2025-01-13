@@ -8,16 +8,38 @@ final class LoginView: UIViewController {
     private var emailField: UITextField!
     private var passwordField: UITextField!
     private var loginButton: UIButton!
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupCallbacks()
+        setupKeyboardHandling()
         navigationController?.navigationBar.isHidden = true
     }
     
     private func setupUI() {
         view.backgroundColor = .white
+        
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
         
         let logoLabel = UILabel()
         logoLabel.text = "SendMe"
@@ -70,48 +92,60 @@ final class LoginView: UIViewController {
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         loginButton.addSubview(activityIndicator)
         
-        view.addSubview(logoLabel)
-        view.addSubview(imageContainerView)
-        view.addSubview(titleLabel)
-        view.addSubview(emailField)
-        view.addSubview(passwordField)
-        view.addSubview(loginButton)
+        let forgotPasswordButton = UIButton(type: .system)
+        forgotPasswordButton.setTitle("Forgot Password?", for: .normal)
+        forgotPasswordButton.titleLabel?.font = .systemFont(ofSize: 15)
+        forgotPasswordButton.addTarget(self, action: #selector(forgotPasswordTapped), for: .touchUpInside)
+        forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        contentView.addSubview(logoLabel)
+        contentView.addSubview(imageContainerView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(emailField)
+        contentView.addSubview(passwordField)
+        contentView.addSubview(loginButton)
+        contentView.addSubview(forgotPasswordButton)
         
         NSLayoutConstraint.activate([
-            logoLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
-            logoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            logoLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             
-            imageContainerView.topAnchor.constraint(equalTo: logoLabel.bottomAnchor, constant: 20),
-            imageContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            imageContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            imageContainerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
+            imageContainerView.topAnchor.constraint(equalTo: logoLabel.bottomAnchor, constant: 10),
+            imageContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            imageContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            imageContainerView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.5),
             
             imageView.topAnchor.constraint(equalTo: imageContainerView.topAnchor),
             imageView.leadingAnchor.constraint(equalTo: imageContainerView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: imageContainerView.trailingAnchor),
             imageView.bottomAnchor.constraint(equalTo: imageContainerView.bottomAnchor),
             
-            titleLabel.topAnchor.constraint(equalTo: imageContainerView.bottomAnchor, constant: 40),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            titleLabel.topAnchor.constraint(equalTo: imageContainerView.bottomAnchor, constant: 30),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             
             emailField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
-            emailField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            emailField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            emailField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            emailField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             emailField.heightAnchor.constraint(equalToConstant: 50),
             
             passwordField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 16),
-            passwordField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            passwordField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            passwordField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            passwordField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             passwordField.heightAnchor.constraint(equalToConstant: 50),
             
-            loginButton.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 32),
-            loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            forgotPasswordButton.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 8),
+            forgotPasswordButton.trailingAnchor.constraint(equalTo: passwordField.trailingAnchor),
+            
+            loginButton.topAnchor.constraint(equalTo: forgotPasswordButton.bottomAnchor, constant: 10),
+            loginButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            loginButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             loginButton.heightAnchor.constraint(equalToConstant: 50),
             
             activityIndicator.centerXAnchor.constraint(equalTo: loginButton.centerXAnchor),
-            activityIndicator.centerYAnchor.constraint(equalTo: loginButton.centerYAnchor)
+            activityIndicator.centerYAnchor.constraint(equalTo: loginButton.centerYAnchor),
+            
+            loginButton.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -20)
         ])
     }
     
@@ -161,10 +195,37 @@ final class LoginView: UIViewController {
         viewModel.login(email: email, password: password)
     }
     
+    @objc private func forgotPasswordTapped() {
+        let forgotPasswordView = ForgotPasswordView()
+        navigationController?.pushViewController(forgotPasswordView, animated: true)
+    }
+    
     private func showError(_ message: String) {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
+    }
+    
+    private func setupKeyboardHandling() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        
+        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height, right: 0.0)
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        scrollView.contentInset = .zero
+        scrollView.scrollIndicatorInsets = .zero
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 } 
 
