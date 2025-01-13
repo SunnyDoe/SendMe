@@ -8,7 +8,7 @@
 import UIKit
 
 
-class GetStartedView: UIViewController {
+final class GetStartedView: UIViewController {
     
     private let viewModel = GetStartedViewModel()
     

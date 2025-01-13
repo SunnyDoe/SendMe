@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GetStartedViewModel {
+final class GetStartedViewModel {
     var onGetStarted: (() -> Void)?
     
     func proceed() {

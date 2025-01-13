@@ -7,19 +7,20 @@
 
 import UIKit
 
-class SignInView: UIViewController {
+final class SignInView: UIViewController {
     private let viewModel = SignInViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupCallbacks()
     }
     
     private func setupUI() {
         view.backgroundColor = .white
         
         let logoLabel = UILabel()
-        logoLabel.text = "Revifly"
+        logoLabel.text = "SendMe"
         logoLabel.font = UIFont.boldSystemFont(ofSize: 28)
         logoLabel.textColor = .black
         logoLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -143,40 +144,32 @@ class SignInView: UIViewController {
         
     }
     
-    @objc private func emailSignInTapped() {
+    private func setupCallbacks() {
         viewModel.onNavigationRequested = { [weak self] action in
             switch action {
             case .emailSignUp:
                 let emailSignUpView = EmailSignUpView()
                 self?.navigationController?.pushViewController(emailSignUpView, animated: true)
-            default:
+            case .appleSignIn:
                 break
+            case .existingUserSignIn:
+                let loginView = LoginView()
+                let navigationController = UINavigationController(rootViewController: loginView)
+                navigationController.modalPresentationStyle = .fullScreen
+                self?.present(navigationController, animated: true)
             }
         }
+    }
+    
+    @objc private func emailSignInTapped() {
         viewModel.navigateToEmailSignUp()
     }
     
     @objc private func appleSignInTapped() {
-        viewModel.onNavigationRequested = { [weak self] action in
-            switch action {
-            case .appleSignIn:
-                break
-            default:
-                break
-            }
-        }
         viewModel.handleAppleSignIn()
     }
     
     @objc private func signInTapped() {
-        viewModel.onNavigationRequested = { [weak self] action in
-            switch action {
-            case .existingUserSignIn:
-                break
-            default:
-                break
-            }
-        }
         viewModel.handleExistingUserSignIn()
     }
 }

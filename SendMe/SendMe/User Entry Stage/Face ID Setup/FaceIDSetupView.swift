@@ -1,6 +1,6 @@
 import UIKit
 
-class FaceIDSetupView: UIViewController {
+final class FaceIDSetupView: UIViewController {
     private let viewModel = FaceIDSetupViewModel()
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
     private var enableButton: UIButton!

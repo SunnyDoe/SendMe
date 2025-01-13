@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let hostingController = UIHostingController(rootView: dashboardView)
             window.rootViewController = hostingController
         } else {
-            let signInView = SignInView()
+            let signInView = SplashViewController()
             let navigationController = UINavigationController(rootViewController: signInView)
             window.rootViewController = navigationController
         }
