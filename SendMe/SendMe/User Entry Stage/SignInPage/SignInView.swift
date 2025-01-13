@@ -151,7 +151,6 @@ final class SignInView: UIViewController {
                 let emailSignUpView = EmailSignUpView()
                 self?.navigationController?.pushViewController(emailSignUpView, animated: true)
             case .appleSignIn:
-                // Handle Apple sign in
                 break
             case .existingUserSignIn:
                 let loginView = LoginView()

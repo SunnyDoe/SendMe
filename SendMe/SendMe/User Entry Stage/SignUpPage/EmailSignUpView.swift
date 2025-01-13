@@ -5,11 +5,13 @@ final class EmailSignUpView: UIViewController {
     private let viewModel = EmailSignUpViewModel()
     private var emailTextField: UITextField!
     private var continueButton: UIButton!
+    private let activityIndicator = UIActivityIndicatorView(style: .medium)
     private var errorLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupCallbacks()
         setupNavigation()
     }
     
@@ -38,7 +40,7 @@ final class EmailSignUpView: UIViewController {
         emailTextField.backgroundColor = .systemBackground
         emailTextField.keyboardType = .emailAddress
         emailTextField.autocapitalizationType = .none
-        emailTextField.addTarget(self, action: #selector(emailTextChanged), for: .editingChanged)
+        emailTextField.addTarget(self, action: #selector(emailChanged), for: .editingChanged)
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         
         let termsText = UILabel()
@@ -68,7 +70,7 @@ final class EmailSignUpView: UIViewController {
         
         continueButton = UIButton(type: .system)
         continueButton.setTitle("Continue", for: .normal)
-        continueButton.setTitleColor(.gray, for: .normal)
+        continueButton.setTitleColor(.white, for: .normal)
         continueButton.backgroundColor = .systemGray5
         continueButton.layer.cornerRadius = 25
         continueButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
@@ -118,52 +120,69 @@ final class EmailSignUpView: UIViewController {
         ])
     }
     
-    @objc private func emailTextChanged(_ textField: UITextField) {
-        guard let email = textField.text else { return }
+    private func setupCallbacks() {
         viewModel.onStateChanged = { [weak self] state in
-            self?.updateUI(with: state)
+            DispatchQueue.main.async {
+                self?.updateUI(with: state)
+            }
         }
-        viewModel.validateEmail(email)
     }
     
-    private func updateUI(with state: EmailSignUpViewModel.ViewState) {
-        updateContinueButton(isEnabled: state.isButtonEnabled)
+    private func updateUI(with state: EmailSignUpModel) {
+        if state.isLoading {
+            activityIndicator.startAnimating()
+            continueButton.setTitle("", for: .normal)
+            continueButton.addSubview(activityIndicator)
+            activityIndicator.center = continueButton.center
+        } else {
+            activityIndicator.removeFromSuperview()
+            continueButton.setTitle("Continue", for: .normal)
+        }
         
-        if let errorMessage = state.errorMessage {
-            showValidationError(errorMessage)
+        continueButton.isEnabled = state.isEmailValid
+        continueButton.backgroundColor = state.isEmailValid ? .systemBlue : .systemGray5
+        
+        if let error = state.error {
+            showValidationError(error)
         } else {
             hideError()
         }
     }
     
-    private func updateContinueButton(isEnabled: Bool) {
-        continueButton.isEnabled = isEnabled
-        continueButton.backgroundColor = isEnabled ? .systemBlue : .systemGray5
-        continueButton.setTitleColor(isEnabled ? .white : .gray, for: .normal)
+    @objc private func emailChanged(_ textField: UITextField) {
+        guard let email = textField.text else { return }
+        viewModel.validateEmail(email)
     }
     
     @objc private func continueButtonTapped() {
-        guard let email = emailTextField.text else { return }
+        guard let email = emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !email.isEmpty else {
+            showValidationError("Please enter your email address")
+            return
+        }
         
-        viewModel.handleContinue(withEmail: email) { [weak self] result in
-            switch result {
-            case .success:
-                let passwordView = PasswordView(email: email)
-                self?.navigationController?.pushViewController(passwordView, animated: true)
-            case .failure(let error):
-                self?.showError(error)
+        if !email.contains("@") || !email.contains(".") {
+            showValidationError("Please enter a valid email address")
+            return
+        }
+        
+        viewModel.checkEmailAvailability(email)
+        
+        viewModel.onStateChanged = { [weak self] state in
+            DispatchQueue.main.async {
+                self?.updateUI(with: state)
+                
+                if !state.isLoading && state.canProceed && state.error == nil {
+                    self?.navigateToPasswordScreen()
+                }
             }
         }
     }
     
-    private func showError(_ error: Error) {
-        let alert = UIAlertController(
-            title: "Error",
-            message: error.localizedDescription,
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
+    private func navigateToPasswordScreen() {
+        guard let email = emailTextField.text else { return }
+        let passwordView = PasswordView(email: email)
+        navigationController?.pushViewController(passwordView, animated: true)
     }
     
     private func showValidationError(_ message: String) {

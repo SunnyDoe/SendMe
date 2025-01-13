@@ -5,7 +5,7 @@ final class PasswordView: UIViewController {
     private var passwordTextField: UITextField!
     private var continueButton: UIButton!
     private var criteriaStackView: UIStackView!
-    private var criteriaLabels: [PasswordViewModel.PasswordCriteria: (UILabel, UIImageView)] = [:]
+    private var criteriaLabels: [PasswordModel.PasswordCriteria: (UILabel, UIImageView)] = [:]
     
     init(email: String) {
         self.viewModel = PasswordViewModel(userEmail: email)
@@ -19,6 +19,7 @@ final class PasswordView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupCallbacks()
         setupNavigation()
     }
     
@@ -54,25 +55,17 @@ final class PasswordView: UIViewController {
         passwordTextField.rightView = showPasswordButton
         passwordTextField.rightViewMode = .always
         
-        criteriaStackView = UIStackView()
-        criteriaStackView.axis = .vertical
-        criteriaStackView.spacing = 16
-        criteriaStackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        PasswordViewModel.PasswordCriteria.allCases.forEach { criteria in
-            let (stack, label, imageView) = createCriteriaView(criteria)
-            criteriaStackView.addArrangedSubview(stack)
-            criteriaLabels[criteria] = (label, imageView)
-        }
+        setupCriteriaStack()
         
         continueButton = UIButton(type: .system)
         continueButton.setTitle("Done", for: .normal)
-        continueButton.setTitleColor(.gray, for: .normal)
+        continueButton.setTitleColor(.white, for: .normal)
         continueButton.backgroundColor = .systemGray5
         continueButton.layer.cornerRadius = 25
         continueButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        continueButton.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
+        continueButton.isEnabled = false
         continueButton.translatesAutoresizingMaskIntoConstraints = false
+        continueButton.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         
         view.addSubview(titleLabel)
         view.addSubview(passwordTextField)
@@ -98,13 +91,30 @@ final class PasswordView: UIViewController {
             continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             continueButton.heightAnchor.constraint(equalToConstant: 50)
         ])
+    }
+    
+    private func setupCriteriaStack() {
+        criteriaStackView = UIStackView()
+        criteriaStackView.axis = .vertical
+        criteriaStackView.spacing = 16
+        criteriaStackView.translatesAutoresizingMaskIntoConstraints = false
         
-        viewModel.onStateChanged = { [weak self] state in
-            self?.updateUI(with: state)
+        PasswordModel.PasswordCriteria.allCases.forEach { criteria in
+            let (stack, label, imageView) = createCriteriaView(criteria.rawValue)
+            criteriaLabels[criteria] = (label, imageView)
+            criteriaStackView.addArrangedSubview(stack)
         }
     }
     
-    private func createCriteriaView(_ criteria: PasswordViewModel.PasswordCriteria) -> (UIStackView, UILabel, UIImageView) {
+    private func setupCallbacks() {
+        viewModel.onStateChanged = { [weak self] state in
+            DispatchQueue.main.async {
+                self?.updateUI(with: state)
+            }
+        }
+    }
+    
+    private func createCriteriaView(_ criteria: String) -> (UIStackView, UILabel, UIImageView) {
         let stack = UIStackView()
         stack.spacing = 8
         stack.alignment = .center
@@ -117,7 +127,7 @@ final class PasswordView: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
         let label = UILabel()
-        label.text = criteria.rawValue
+        label.text = criteria
         label.font = .systemFont(ofSize: 15)
         label.textColor = .systemRed
         
@@ -142,7 +152,7 @@ final class PasswordView: UIViewController {
         button.setImage(UIImage(systemName: imageName), for: .normal)
     }
     
-    private func updateUI(with state: PasswordViewModel.ViewState) {
+    private func updateUI(with state: PasswordModel) {
         state.passwordCriteria.forEach { (criteria, isValid) in
             if let (label, imageView) = criteriaLabels[criteria] {
                 imageView.image = UIImage(systemName: isValid ? "checkmark.circle.fill" : "xmark.circle.fill")
@@ -150,10 +160,9 @@ final class PasswordView: UIViewController {
                 label.textColor = isValid ? .systemGreen : .systemRed
             }
         }
-        
         continueButton.isEnabled = state.isButtonEnabled
         continueButton.backgroundColor = state.isButtonEnabled ? .systemBlue : .systemGray5
-        continueButton.setTitleColor(state.isButtonEnabled ? .white : .gray, for: .normal)
+        continueButton.setTitleColor(.white, for: .normal)
     }
     
     @objc private func continueButtonTapped() {
