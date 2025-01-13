@@ -4,8 +4,8 @@ struct DashboardView: View {
     @StateObject private var viewModel = DashboardViewModel()
     
     var body: some View {
-        NavigationView {
-            TabView(selection: $viewModel.selectedTab) {
+        TabView(selection: $viewModel.selectedTab) {
+            NavigationView {
                 ScrollView {
                     VStack(spacing: 20) {
                         VStack(spacing: 8) {
@@ -60,36 +60,52 @@ struct DashboardView: View {
                         .padding()
                     }
                 }
-                .navigationBarItems(
-                    leading: CountryButton(),
-                    trailing: HStack(spacing: 16) {
-                        Button(action: viewModel.search) {
-                            Image(systemName: "magnifyingglass")
-                                .foregroundColor(.primary)
-                        }
-                        Button(action: viewModel.showNotifications) {
-                            Image(systemName: "bell")
-                                .foregroundColor(.primary)
+                .navigationTitle("Home")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        CountryButton()
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        HStack(spacing: 16) {
+                            Button(action: viewModel.search) {
+                                Image(systemName: "magnifyingglass")
+                                    .foregroundColor(.primary)
+                            }
+                            Button(action: viewModel.showNotifications) {
+                                Image(systemName: "bell")
+                                    .foregroundColor(.primary)
+                            }
                         }
                     }
-                )
-                .tag(0)
-                
-                TransferView()
-                    .tag(1)
-                
-                AnalyticsView()
-                    .tag(2)
-                
-                ProfileView()
-                    .tag(3)
+                }
             }
-            .navigationBarTitleDisplayMode(.inline)
+            .tag(0)
+            
+            NavigationView {
+                TransferView()
+                    .navigationTitle("Transfer")
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+            .tag(1)
+            
+            NavigationView {
+                AnalyticsView()
+                    .navigationTitle("Analytics")
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+            .tag(2)
+            
+            NavigationView {
+                ProfileView()
+                    .navigationTitle("Profile")
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+            .tag(3)
         }
         .overlay(
             CustomTabBar(selectedTab: $viewModel.selectedTab)
                 .background(Color(.systemBackground))
-                .shadow(radius: 2)
             , alignment: .bottom
         )
     }
