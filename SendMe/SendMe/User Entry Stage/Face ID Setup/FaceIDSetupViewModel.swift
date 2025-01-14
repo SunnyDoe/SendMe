@@ -1,7 +1,7 @@
 import Foundation
 import LocalAuthentication
 
-class FaceIDSetupViewModel {
+final class FaceIDSetupViewModel {
     private(set) var model: FaceIDSetupModel
     var onStateChanged: ((FaceIDSetupModel) -> Void)?
     var onFaceIDEnabled: (() -> Void)?

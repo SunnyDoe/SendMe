@@ -48,10 +48,27 @@ final class ProfileViewModel: ObservableObject {
     func signOut() {
         do {
             try Auth.auth().signOut()
+            UserDefaults.standard.set(false, forKey: "isLoggedIn")
+            
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first {
+                let signInView = SignInView()
+                let navigationController = UINavigationController(rootViewController: signInView)
+                navigationController.modalPresentationStyle = .fullScreen
+                
+                window.rootViewController = navigationController
+                
+                UIView.transition(with: window,
+                                  duration: 0.3,
+                                  options: .transitionCrossDissolve,
+                                  animations: nil,
+                                  completion: nil)
+            }
         } catch {
-            state.error = error.localizedDescription
+            print("Error signing out: \(error.localizedDescription)")
         }
     }
+    
     
     func showPrivacySettings() {
         showingPrivacySettings = true
@@ -60,4 +77,4 @@ final class ProfileViewModel: ObservableObject {
     func showEditProfile() {
         showingEditProfile = true
     }
-} 
+}

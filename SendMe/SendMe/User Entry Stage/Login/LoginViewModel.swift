@@ -1,7 +1,7 @@
 import Foundation
 import FirebaseAuth
 
-class LoginViewModel {
+final class LoginViewModel {
     private(set) var model: LoginModel
     var onStateChanged: ((LoginModel) -> Void)?
     var onLoginSuccess: (() -> Void)?

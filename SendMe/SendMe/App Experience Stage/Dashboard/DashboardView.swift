@@ -63,9 +63,6 @@ struct DashboardView: View {
                 .navigationTitle("Home")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        CountryButton()
-                    }
                     ToolbarItem(placement: .navigationBarTrailing) {
                         HStack(spacing: 16) {
                             Button(action: viewModel.search) {
@@ -138,16 +135,6 @@ struct HeaderWithViewAll: View {
             }
             .font(.subheadline)
             .foregroundColor(.blue)
-        }
-    }
-}
-
-struct CountryButton: View {
-    var body: some View {
-        Button(action: {}) {
-            Image("us_flag") 
-                .resizable()
-                .frame(width: 30, height: 20)
         }
     }
 }
