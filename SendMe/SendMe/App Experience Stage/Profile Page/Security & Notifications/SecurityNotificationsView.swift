@@ -8,7 +8,7 @@ struct SecurityNotificationsView: View {
         List {
             Section("Security") {
                 NavigationLink {
-                    // Password change view will be implemented later
+                    ChangePasswordView()
                 } label: {
                     HStack {
                         Image(systemName: "lock")
