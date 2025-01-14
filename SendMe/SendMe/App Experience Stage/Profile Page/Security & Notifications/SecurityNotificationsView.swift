@@ -23,12 +23,13 @@ struct SecurityNotificationsView: View {
                         .frame(width: 24)
                     Text("Sign in with Face ID")
                     Spacer()
-                    Toggle("", isOn: $viewModel.isFaceIDEnabled)
+                    Toggle("Face ID Authentication", isOn: $viewModel.isFaceIDEnabled)
                         .disabled(true)
                         .tint(.gray)
                         .onTapGesture {
                             viewModel.toggleFaceID()
                         }
+                        .accessibilityHint("Face ID authentication is currently unavailable")
                 }
             }
             
@@ -39,6 +40,9 @@ struct SecurityNotificationsView: View {
                     description: viewModel.pushDescription,
                     isEnabled: $viewModel.isPushEnabled
                 )
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Personalised push notifications")
+                .accessibilityHint("Toggle to receive personalized push notifications")
                 
                 MarketingToggleView(
                     icon: "message",

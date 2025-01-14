@@ -12,11 +12,13 @@ struct ProfileView: View {
                     .scaledToFill()
                     .frame(width: 100, height: 100)
                     .clipShape(Circle())
+                    .accessibilityLabel("Profile picture")
             } else {
                 Image(systemName: "person.circle.fill")
                     .resizable()
                     .frame(width: 100, height: 100)
                     .foregroundColor(.gray)
+                    .accessibilityLabel("Default profile picture")
             }
             
             VStack(spacing: 8) {
@@ -48,11 +50,9 @@ struct ProfileView: View {
                 
                 NavigationLink(destination: InviteFriendsView()) {
                     SettingsRow(icon: "person.2", title: "Invite friends")
+                        .accessibilityHint("Invite friends and earn rewards")
                 }
                 
-                NavigationLink(destination: Text("Get help")) {
-                    SettingsRow(icon: "questionmark.circle", title: "Get help")
-                }
                 
                 NavigationLink(destination: Text("Send feedback")) {
                     SettingsRow(icon: "bubble.left", title: "Send feedback")
@@ -66,6 +66,8 @@ struct ProfileView: View {
                     viewModel.signOut()
                 }) {
                     SettingsRow(icon: "arrow.right.square", title: "Sign out", textColor: .red)
+                        .accessibilityLabel("Sign out")
+                        .accessibilityHint("Sign out of your account")
                 }
             }
             .listStyle(InsetGroupedListStyle())
