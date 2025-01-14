@@ -125,19 +125,27 @@ struct AddCardView: View {
                     .foregroundColor(.blue)
                 
                 Button(action: {
-                    viewModel.validateForm()
-                    if viewModel.isFormValid {
+                    Task {
+                        await viewModel.addCard()
                     }
                 }) {
-                    Text("Add card")
-                        .font(.headline)
-                        .foregroundColor(viewModel.isFormValid ? .white : .gray)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50)
-                        .background(viewModel.isFormValid ? Color.blue : Color(.systemGray5))
-                        .cornerRadius(25)
+                    HStack {
+                        if viewModel.isLoading {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                .scaleEffect(0.8)
+                        } else {
+                            Text("Add card")
+                        }
+                    }
+                    .font(.headline)
+                    .foregroundColor(viewModel.isFormValid ? .white : .gray)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 50)
+                    .background(viewModel.isFormValid ? Color.blue : Color(.systemGray5))
+                    .cornerRadius(25)
                 }
-                .disabled(!viewModel.isFormValid)
+                .disabled(!viewModel.isFormValid || viewModel.isLoading)
                 
                 HStack(spacing: 4) {
                     Image(systemName: "lock.fill")
@@ -161,6 +169,11 @@ struct AddCardView: View {
                     }
                     .foregroundColor(.blue)
                 }
+            }
+        }
+        .onChange(of: viewModel.showSuccessAlert) { success in
+            if success {
+                dismiss()
             }
         }
     }

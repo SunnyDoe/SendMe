@@ -1,11 +1,14 @@
 import Foundation
 
+@MainActor
 class AddCardViewModel: ObservableObject {
     @Published var cardName = ""
     @Published var cardNumber = ""
     @Published var expiryDate = ""
     @Published var cvc = ""
     @Published var cardBrand: CardBrand = .unknown
+    @Published var isLoading = false
+    @Published var showSuccessAlert = false
     
     @Published var cardNameError: String?
     @Published var cardNumberError: String?
@@ -17,6 +20,7 @@ class AddCardViewModel: ObservableObject {
     private let expiryDateRegex = "^(0[1-9]|1[0-2])/([0-9]{2})$"
     private let cvcRegex = "^[0-9]{3,4}$"
     
+    @MainActor
     func validateForm() {
         validateCardName()
         validateCardNumber()
@@ -33,11 +37,13 @@ class AddCardViewModel: ObservableObject {
                      !cvc.isEmpty
     }
     
+    @MainActor
     private func validateCardName() {
         cardNameError = cardName.isEmpty ? "Name is required" :
                        cardName.count < 2 ? "Name is too short" : nil
     }
     
+    @MainActor
     private func validateCardNumber() {
         let cleaned = cardNumber.replacingOccurrences(of: " ", with: "")
         if cleaned.isEmpty {
@@ -51,6 +57,7 @@ class AddCardViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     private func validateExpiryDate() {
         if expiryDate.isEmpty {
             expiryDateError = "Expiry date is required"
@@ -77,6 +84,7 @@ class AddCardViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     private func validateCVC() {
         cvcError = cvc.isEmpty ? "CVC is required" :
                   !cvc.matches(pattern: cvcRegex) ? "Invalid CVC" : nil
@@ -131,6 +139,29 @@ class AddCardViewModel: ObservableObject {
                 cardBrand = .unknown
             }
         }
+    }
+    
+    func addCard() async {
+        isLoading = true
+        
+        await Task {
+            try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
+        }.value
+        
+        let lastFour = String(cardNumber.replacingOccurrences(of: " ", with: "").suffix(4))
+        let newCard = SavedCard(
+            brand: cardBrand,
+            lastFourDigits: lastFour,
+            expiryDate: expiryDate
+        )
+        
+        isLoading = false
+        NotificationCenter.default.post(
+            name: .cardAdded,
+            object: nil,
+            userInfo: ["card": newCard]
+        )
+        showSuccessAlert = true
     }
 }
 
