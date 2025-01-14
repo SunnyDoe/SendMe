@@ -42,7 +42,7 @@ struct ProfileView: View {
                     SettingsRow(icon: "creditcard", title: "Payment methods")
                 }
                 
-                NavigationLink(destination: Text("Security & Notifications")) {
+                NavigationLink(destination: SecurityNotificationsView()) {
                     SettingsRow(icon: "lock", title: "Security & Notifications")
                 }
                 
