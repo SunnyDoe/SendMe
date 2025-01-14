@@ -46,7 +46,7 @@ struct ProfileView: View {
                     SettingsRow(icon: "lock", title: "Security & Notifications")
                 }
                 
-                NavigationLink(destination: Text("Invite friends")) {
+                NavigationLink(destination: InviteFriendsView()) {
                     SettingsRow(icon: "person.2", title: "Invite friends")
                 }
                 
