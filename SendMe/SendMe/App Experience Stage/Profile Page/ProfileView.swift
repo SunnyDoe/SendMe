@@ -53,8 +53,7 @@ struct ProfileView: View {
                         .accessibilityHint("Invite friends and earn rewards")
                 }
                 
-                
-                NavigationLink(destination: Text("Send feedback")) {
+                NavigationLink(destination: SendFeedbackView()) {
                     SettingsRow(icon: "bubble.left", title: "Send feedback")
                 }
                 
