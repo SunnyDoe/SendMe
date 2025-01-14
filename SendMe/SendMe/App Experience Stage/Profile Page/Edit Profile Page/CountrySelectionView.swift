@@ -20,6 +20,7 @@ struct CountrySelectionView: View {
         ("🇲🇽", "Mexico"),
         ("🇵🇱", "Poland"),
         ("🇳🇱", "Netherlands"),
+        ("🇬🇪", "Georgia")
     ].sorted(by: { $0.name < $1.name })
     
     var body: some View {
