@@ -82,7 +82,7 @@ struct ChangePasswordView: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .passwordChanged)) { _ in
-            showSuccessAlert = true
+            dismiss()
         }
         .alert("Success", isPresented: $showSuccessAlert) {
             Button("OK") { dismiss() }

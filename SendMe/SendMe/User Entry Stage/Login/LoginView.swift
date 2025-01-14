@@ -150,30 +150,23 @@ final class LoginView: UIViewController {
     }
     
     private func setupCallbacks() {
-        viewModel.onStateChanged = { [weak self] state in
-            DispatchQueue.main.async {
-                if state.isLoading {
-                    self?.activityIndicator.startAnimating()
-                    self?.loginButton.isEnabled = false
-                } else {
-                    self?.activityIndicator.stopAnimating()
-                    self?.loginButton.isEnabled = true
-                }
-                
-                if let error = state.error {
-                    self?.showError(error)
-                }
-            }
-        }
-        
         viewModel.onLoginSuccess = { [weak self] in
             DispatchQueue.main.async {
                 self?.navigateToMainApp()
             }
         }
+        
+        viewModel.onLoginError = { [weak self] error in
+            DispatchQueue.main.async {
+                self?.showError(error)
+            }
+        }
     }
     
     private func navigateToMainApp() {
+        activityIndicator.stopAnimating()
+        loginButton.isEnabled = true
+        
         let dashboardView = UIHostingController(rootView: DashboardView())
         dashboardView.modalPresentationStyle = .fullScreen
         present(dashboardView, animated: true)
@@ -183,15 +176,15 @@ final class LoginView: UIViewController {
         view.endEditing(true)
         
         guard let email = emailField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
-              let password = passwordField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {
+              let password = passwordField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !email.isEmpty, !password.isEmpty else {
             showError("Please fill in all fields")
             return
         }
         
-        if email.isEmpty || password.isEmpty {
-            showError("Please fill in all fields")
-            return
-        }
+        activityIndicator.startAnimating()
+        loginButton.isEnabled = false
+        
         viewModel.login(email: email, password: password)
     }
     
@@ -201,6 +194,9 @@ final class LoginView: UIViewController {
     }
     
     private func showError(_ message: String) {
+        activityIndicator.stopAnimating()
+        loginButton.isEnabled = true
+        
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)

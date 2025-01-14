@@ -3,6 +3,7 @@ import SwiftUI
 struct SecurityNotificationsView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = SecurityNotificationsViewModel()
+    @State private var showToast = false
     
     var body: some View {
         List {
@@ -67,6 +68,10 @@ struct SecurityNotificationsView: View {
                     .foregroundColor(.blue)
                 }
             }
+        }
+        .toast(isShowing: $showToast, message: "Password was successfully changed")
+        .onReceive(NotificationCenter.default.publisher(for: .passwordChanged)) { _ in
+            showToast = true
         }
         .alert("Face ID Unavailable", isPresented: $viewModel.showFaceIDAlert) {
             Button("OK", role: .cancel) { }
