@@ -4,7 +4,6 @@ struct ProfileModel {
     var username: String
     var handle: String
     var avatar: UIImage?
-    var friendCount: Int
     var isLoading: Bool
     var error: String?
     var selectedTab: ProfileTab
@@ -20,10 +19,9 @@ struct ProfileModel {
     }
     
     static let initial = ProfileModel(
-        username: "",
+        username: "Your Name",
         handle: UserDefaults.standard.string(forKey: "userHandle") ?? generateUniqueHandle(),
-        avatar: nil,
-        friendCount: 0,
+        avatar: UserDefaults.standard.savedAvatar,
         isLoading: false,
         error: nil,
         selectedTab: .activity

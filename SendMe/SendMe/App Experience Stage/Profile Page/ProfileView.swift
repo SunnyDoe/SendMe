@@ -26,9 +26,6 @@ struct ProfileView: View {
                 
                 Text(viewModel.state.handle)
                     .foregroundColor(.gray)
-                
-                Text("\(viewModel.state.friendCount) friends")
-                    .padding(.top, 4)
             }
             .padding(.bottom)
             

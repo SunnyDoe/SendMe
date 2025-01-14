@@ -35,7 +35,6 @@ final class ProfileViewModel: ObservableObject {
             username: firstName,
             handle: handle,
             avatar: UserDefaults.standard.savedAvatar,
-            friendCount: state.friendCount,
             isLoading: false,
             error: nil,
             selectedTab: state.selectedTab
