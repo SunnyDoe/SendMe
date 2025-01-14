@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         VStack(spacing: 20) {
@@ -29,95 +30,95 @@ struct ProfileView: View {
                 Text("\(viewModel.state.friendCount) friends")
                     .padding(.top, 4)
             }
-            .padding(.top)
+            .padding(.bottom)
             
-            HStack(spacing: 12) {
-                Button(action: {}) {
-                    Text("Upgrade")
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50)
-                        .background(Color.blue)
-                        .cornerRadius(25)
+            List {
+                NavigationLink(destination: Text("Upgrade")) {
+                    SettingsRow(icon: "star", title: "Upgrade", iconColor: .yellow)
                 }
                 
-                Button(action: {}) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "gear")
-                        Text("Settings")
-                    }
-                    .fontWeight(.semibold)
-                    .foregroundColor(.black)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
-                    .background(Color(.systemGray6))
-                    .cornerRadius(25)
+                NavigationLink(destination: EditProfileView()) {
+                    SettingsRow(icon: "person", title: "Edit profile")
+                }
+                
+                NavigationLink(destination: Text("Payment methods")) {
+                    SettingsRow(icon: "creditcard", title: "Payment methods")
+                }
+                
+                NavigationLink(destination: Text("Security & Notifications")) {
+                    SettingsRow(icon: "lock", title: "Security & Notifications")
+                }
+                
+                NavigationLink(destination: Text("Invite friends")) {
+                    SettingsRow(icon: "person.2", title: "Invite friends")
+                }
+                
+                NavigationLink(destination: Text("Get help")) {
+                    SettingsRow(icon: "questionmark.circle", title: "Get help")
+                }
+                
+                NavigationLink(destination: Text("Send feedback")) {
+                    SettingsRow(icon: "bubble.left", title: "Send feedback")
+                }
+                
+                NavigationLink(destination: Text("Rate us")) {
+                    SettingsRow(icon: "star", title: "Rate us")
+                }
+                
+                Button(action: {
+                    viewModel.signOut()
+                }) {
+                    SettingsRow(icon: "arrow.right.square", title: "Sign out", textColor: .red)
                 }
             }
-            .padding()
-            
-            HStack(spacing: 0) {
-                ForEach([
-                    (ProfileModel.ProfileTab.activity, "Activity"),
-                    (ProfileModel.ProfileTab.replies, "Replies"),
-                    (ProfileModel.ProfileTab.media, "Media")
-                ], id: \.0) { tab, title in
-                    Button(action: { viewModel.selectTab(tab) }) {
-                        VStack(spacing: 8) {
-                            Text(title)
-                                .foregroundColor(viewModel.state.selectedTab == tab ? .blue : .gray)
-                            
-                            Rectangle()
-                                .fill(viewModel.state.selectedTab == tab ? Color.blue : Color.clear)
-                                .frame(height: 2)
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                }
-            }
-            .padding(.horizontal)
-            
-            VStack(spacing: 20) {
-                Image(systemName: "magnifyingglass")
-                    .font(.system(size: 50))
-                    .foregroundColor(.gray)
-                    .padding(.top, 40)
-                
-                Text("Nothing found")
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                
-                Text("Check back later")
-                    .foregroundColor(.gray)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.top, 20)
+            .listStyle(InsetGroupedListStyle())
+            .scrollContentBackground(.hidden)
+            .background(Color.white)
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: { viewModel.showPrivacySettings() }) {
+                Button(action: { viewModel.showingPrivacySettings = true }) {
                     Image(systemName: "globe")
                         .foregroundColor(.primary)
                 }
             }
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: { viewModel.showingEditProfile = true }) {
-                    HStack(spacing: 4) {
-                        Text("Edit")
-                    }
+                NavigationLink(destination: EditProfileView()) {
+                    Text("Edit")
                 }
             }
         }
         .sheet(isPresented: $viewModel.showingPrivacySettings) {
             PrivacySettingsView()
         }
-        .sheet(isPresented: $viewModel.showingEditProfile) {
-            EditProfileView()
-        }
     }
 }
+
+struct SettingsRow: View {
+    let icon: String
+    let title: String
+    var iconColor: Color = .blue
+    var textColor: Color = .primary
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .foregroundColor(iconColor)
+                .frame(width: 24, height: 24)
+            
+            Text(title)
+                .foregroundColor(textColor)
+            
+            Spacer()
+            
+          
+            }
+        .padding(.vertical, 4)
+        }
+    }
+
+
 
 #Preview {
     NavigationView {

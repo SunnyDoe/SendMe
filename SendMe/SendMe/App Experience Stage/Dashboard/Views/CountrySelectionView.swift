@@ -46,13 +46,6 @@ struct CountrySelectionView: View {
         }
         .navigationTitle("Select Country")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button("Cancel") {
-                    dismiss()
-                }
-            }
-        }
     }
 }
 
@@ -60,4 +53,4 @@ struct CountrySelectionView: View {
     NavigationView {
         CountrySelectionView(selectedCountry: .constant("United States"))
     }
-} 
+}
