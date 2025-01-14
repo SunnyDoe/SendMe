@@ -20,8 +20,10 @@ struct SendFeedbackView: View {
                 
                 Text("Send feedback")
                     .font(.system(size: 17, weight: .semibold))
+                    .frame(maxWidth: .infinity)
                 
                 Spacer()
+                    .frame(width: 60)
             }
             .padding()
             
