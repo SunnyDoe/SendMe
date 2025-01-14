@@ -11,11 +11,14 @@ struct Toast: ViewModifier {
             if isShowing {
                 VStack {
                     Spacer()
-                    HStack {
+                    HStack(spacing: 12) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundColor(.green)
+                        
                         Text(message)
                             .foregroundColor(.white)
-                            .padding()
                     }
+                    .padding()
                     .background(Color.black.opacity(0.7))
                     .cornerRadius(10)
                     .padding(.bottom, 20)
@@ -38,4 +41,4 @@ extension View {
     func toast(isShowing: Binding<Bool>, message: String) -> some View {
         modifier(Toast(isShowing: isShowing, message: message))
     }
-} 
+}
