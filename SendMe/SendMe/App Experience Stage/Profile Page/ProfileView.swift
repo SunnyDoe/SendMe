@@ -38,7 +38,7 @@ struct ProfileView: View {
                     SettingsRow(icon: "person", title: "Edit profile")
                 }
                 
-                NavigationLink(destination: Text("Payment methods")) {
+                NavigationLink(destination: PaymentMethodsView()) {
                     SettingsRow(icon: "creditcard", title: "Payment methods")
                 }
                 
