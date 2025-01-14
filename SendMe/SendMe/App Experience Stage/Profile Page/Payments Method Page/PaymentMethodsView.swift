@@ -5,8 +5,7 @@ struct PaymentMethodsView: View {
     
     var body: some View {
         List {
-            Button(action: {
-            }) {
+            NavigationLink(destination: AddCardView()) {
                 HStack {
                     ZStack {
                         RoundedRectangle(cornerRadius: 8)
@@ -23,10 +22,6 @@ struct PaymentMethodsView: View {
                         .foregroundColor(.black)
                     
                     Spacer()
-                    
-                    Image(systemName: "chevron.right")
-                        .foregroundColor(.gray.opacity(0.5))
-                        .font(.system(size: 14))
                 }
                 .padding(.vertical, 8)
             }
