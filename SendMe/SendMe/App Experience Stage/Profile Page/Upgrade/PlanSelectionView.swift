@@ -4,7 +4,7 @@ struct PlanSelectionView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var selectedPlan: PlanType = .yearly
     @StateObject private var paymentMethodsViewModel = PaymentMethodsViewModel()
-    @State private var showingPaymentMethods = false
+    @State private var showingPaymentSelection = false
 
     var body: some View {
         VStack(spacing: 24) {
@@ -42,7 +42,7 @@ struct PlanSelectionView: View {
             
             VStack(spacing: 8) {
                 Button(action: {
-                    showingPaymentMethods = true
+                    showingPaymentSelection = true
                 }) {
                     Text("Continue to checkout")
                         .font(.system(size: 17, weight: .semibold))
@@ -63,8 +63,8 @@ struct PlanSelectionView: View {
         .onAppear {
             paymentMethodsViewModel.loadSavedCards()
         }
-        .sheet(isPresented: $showingPaymentMethods) {
-            PaymentMethodsView(viewModel: paymentMethodsViewModel)
+        .sheet(isPresented: $showingPaymentSelection) {
+            PaymentSelectionView(viewModel: paymentMethodsViewModel)
         }
     }
 }
