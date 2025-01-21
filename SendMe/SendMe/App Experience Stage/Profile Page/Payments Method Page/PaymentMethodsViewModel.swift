@@ -19,7 +19,7 @@ class PaymentMethodsViewModel: ObservableObject {
         }
     }
     
-    private func loadSavedCards() {
+     func loadSavedCards() {
         do {
             savedCards = try KeychainManager.shared.loadCards()
         } catch {

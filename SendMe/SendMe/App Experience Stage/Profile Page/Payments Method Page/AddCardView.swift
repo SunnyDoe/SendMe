@@ -160,21 +160,5 @@ struct AddCardView: View {
         }
         .padding()
         .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: { dismiss() }) {
-                    HStack {
-                        Image(systemName: "chevron.left")
-                        Text("Back")
-                    }
-                    .foregroundColor(.blue)
-                }
-            }
-        }
-        .onChange(of: viewModel.showSuccessAlert) { success in
-            if success {
-                dismiss()
-            }
-        }
     }
 } 

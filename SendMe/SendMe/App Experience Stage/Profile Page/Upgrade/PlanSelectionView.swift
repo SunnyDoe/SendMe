@@ -3,7 +3,9 @@ import SwiftUI
 struct PlanSelectionView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var selectedPlan: PlanType = .yearly
-    
+    @StateObject private var paymentMethodsViewModel = PaymentMethodsViewModel()
+    @State private var showingPaymentMethods = false
+
     var body: some View {
         VStack(spacing: 24) {
             Text("Choose your plan")
@@ -39,7 +41,9 @@ struct PlanSelectionView: View {
             Spacer()
             
             VStack(spacing: 8) {
-                Button(action: {}) {
+                Button(action: {
+                    showingPaymentMethods = true
+                }) {
                     Text("Continue to checkout")
                         .font(.system(size: 17, weight: .semibold))
                         .foregroundColor(.white)
@@ -56,9 +60,14 @@ struct PlanSelectionView: View {
             }
             .padding(.bottom, 32)
         }
+        .onAppear {
+            paymentMethodsViewModel.loadSavedCards()
+        }
+        .sheet(isPresented: $showingPaymentMethods) {
+            PaymentMethodsView(viewModel: paymentMethodsViewModel)
+        }
     }
 }
-
 
 #Preview {
     PlanSelectionView()

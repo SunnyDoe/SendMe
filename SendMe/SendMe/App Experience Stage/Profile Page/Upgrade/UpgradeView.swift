@@ -70,8 +70,10 @@ struct UpgradeView: View {
         }
         .navigationBarHidden(true)
         .sheet(isPresented: $showingPlanSelection) {
-            PlanSelectionView()
-                .presentationDetents([.height(520)])
+            NavigationView {
+                PlanSelectionView()
+                    .presentationDetents([.height(520)])
+            }
         }
     }
 }
