@@ -57,7 +57,7 @@ struct ProfileView: View {
                     SettingsRow(icon: "bubble.left", title: "Send feedback")
                 }
                 
-                NavigationLink(destination: Text("Rate us")) {
+                NavigationLink(destination: RatingView()) {
                     SettingsRow(icon: "star", title: "Rate us")
                 }
                 
