@@ -32,7 +32,7 @@ struct ProfileView: View {
             .padding(.bottom)
             
             List {
-                NavigationLink(destination: Text("Upgrade")) {
+                NavigationLink(destination: UpgradeView()) {
                     SettingsRow(icon: "star", title: "Upgrade", iconColor: .yellow)
                 }
                 
