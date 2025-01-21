@@ -23,27 +23,37 @@ struct RatingView: View {
                         }
                 }
             }
+            .padding(.top, 32)
             
-            Button(action: submitRating) {
-                Text("Submit Rating")
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
-                    .background(Color.blue)
-                    .cornerRadius(25)
-            }
-            .disabled(selectedRating == 0 || isSubmitting)
-            .padding(.horizontal, 24)
+            Spacer() 
             
             if let message = submissionMessage {
                 Text(message)
                     .foregroundColor(.green)
                     .font(.system(size: 15))
                     .multilineTextAlignment(.center)
+                    .padding(.bottom, 8)
             }
             
-            Spacer()
+            Button(action: submitRating) {
+                HStack {
+                    if isSubmitting {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                            .padding(.trailing, 8)
+                    }
+                    
+                    Text(isSubmitting ? "Submitting..." : "Submit Rating")
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundColor(.white)
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: 50)
+                .background(Color.blue)
+                .cornerRadius(25)
+            }
+            .disabled(selectedRating == 0 || isSubmitting)
+            .padding(.horizontal, 24)
         }
         .padding()
     }
@@ -54,11 +64,11 @@ struct RatingView: View {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             isSubmitting = false
-            submissionMessage = "Thank you for your rating us!"
+            submissionMessage = "Thank you for your rating!"
         }
     }
 }
 
 #Preview {
     RatingView()
-} 
+}
