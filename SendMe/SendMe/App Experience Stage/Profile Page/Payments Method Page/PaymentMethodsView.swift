@@ -3,6 +3,7 @@ import SwiftUI
 struct PaymentMethodsView: View {
     @ObservedObject var viewModel: PaymentMethodsViewModel
     @State private var showSuccessToast = false
+    @State private var showingAddCard = false
     
     var body: some View {
         NavigationView {
@@ -21,7 +22,7 @@ struct PaymentMethodsView: View {
                             }
                     }
                     
-                    NavigationLink(destination: AddCardView()) {
+                    Button(action: { showingAddCard = true }) {
                         HStack {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 8)
@@ -77,6 +78,12 @@ struct PaymentMethodsView: View {
             }
             .onAppear {
                 viewModel.loadSavedCards()
+            }
+        }
+        .navigationViewStyle(.stack)
+        .sheet(isPresented: $showingAddCard) {
+            NavigationView {
+                AddCardView()
             }
         }
     }

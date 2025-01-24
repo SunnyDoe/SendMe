@@ -6,10 +6,26 @@ struct AddCardView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("Link your card")
-                .font(.system(size: 32, weight: .bold))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top)
+            HStack {
+                Button(action: { dismiss() }) {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                        Text("Back")
+                    }
+                    .foregroundColor(.blue)
+                }
+                .accessibilityLabel("Go back")
+                
+                Spacer()
+                
+                Text("Link your card")
+                    .font(.system(size: 17, weight: .semibold))
+                    .frame(maxWidth: .infinity)
+                
+                Spacer()
+                    .frame(width: 60)
+            }
+            .padding()
             
             VStack(spacing: 20) {
                 VStack(alignment: .leading, spacing: 4) {
@@ -158,7 +174,6 @@ struct AddCardView: View {
                 .font(.footnote)
             }
         }
-        .padding()
-        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
     }
 } 
