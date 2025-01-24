@@ -175,5 +175,8 @@ struct AddCardView: View {
             }
         }
         .navigationBarHidden(true)
+        .onReceive(NotificationCenter.default.publisher(for: .dismissAddCard)) { _ in
+            dismiss()
+        }
     }
 } 

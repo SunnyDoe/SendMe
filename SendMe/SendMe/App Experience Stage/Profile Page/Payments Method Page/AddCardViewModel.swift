@@ -14,11 +14,21 @@ class AddCardViewModel: ObservableObject {
     @Published var cardNumberError: String?
     @Published var expiryDateError: String?
     @Published var cvcError: String?
-    @Published var isFormValid = false
     
     private let cardNumberRegex = "^[0-9]{16}$"
     private let expiryDateRegex = "^(0[1-9]|1[0-2])/([0-9]{2})$"
     private let cvcRegex = "^[0-9]{3,4}$"
+    
+    var isFormValid: Bool {
+        cardNameError == nil &&
+        cardNumberError == nil &&
+        expiryDateError == nil &&
+        cvcError == nil &&
+        !cardName.isEmpty &&
+        !cardNumber.isEmpty &&
+        !expiryDate.isEmpty &&
+        !cvc.isEmpty
+    }
     
     @MainActor
     func validateForm() {
@@ -26,15 +36,6 @@ class AddCardViewModel: ObservableObject {
         validateCardNumber()
         validateExpiryDate()
         validateCVC()
-        
-        isFormValid = cardNameError == nil &&
-                     cardNumberError == nil &&
-                     expiryDateError == nil &&
-                     cvcError == nil &&
-                     !cardName.isEmpty &&
-                     !cardNumber.isEmpty &&
-                     !expiryDate.isEmpty &&
-                     !cvc.isEmpty
     }
     
     @MainActor
@@ -144,25 +145,19 @@ class AddCardViewModel: ObservableObject {
     func addCard() async {
         isLoading = true
         
-        await Task {
-            try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
-        }.value
+        try? await Task.sleep(nanoseconds: 1_500_000_000)
         
-        let lastFour = String(cardNumber.replacingOccurrences(of: " ", with: "").suffix(4))
-        let newCard = SavedCard(
-            brand: cardBrand,
-            lastFourDigits: lastFour,
-            expiryDate: expiryDate
-        )
+        NotificationCenter.default.post(name: .cardAdded, object: nil)
         
-        isLoading = false
-        NotificationCenter.default.post(
-            name: .cardAdded,
-            object: nil,
-            userInfo: ["card": newCard]
-        )
-        showSuccessAlert = true
+        DispatchQueue.main.async { [weak self] in
+            self?.isLoading = false
+            NotificationCenter.default.post(name: .dismissAddCard, object: nil)
+        }
     }
+}
+
+extension Notification.Name {
+    static let dismissAddCard = Notification.Name("dismissAddCard")
 }
 
 private extension String {
