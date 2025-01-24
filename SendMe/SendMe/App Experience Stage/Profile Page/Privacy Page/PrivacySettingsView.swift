@@ -47,14 +47,16 @@ struct PrivacySettingsView: View {
                 }
             }
             .listStyle(InsetGroupedListStyle())
-            .navigationTitle("Privacy")
+            .navigationTitle("Privacy Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { dismiss() }) {
-                        Image(systemName: "chevron.left")
+                        Image(systemName: "xmark")
                             .foregroundColor(.blue)
+                            .font(.system(size: 17, weight: .semibold))
                     }
+                    .accessibilityLabel("Close privacy settings")
                 }
             }
         }
