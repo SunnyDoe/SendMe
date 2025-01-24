@@ -6,48 +6,58 @@ struct ChangePasswordView: View {
     @State private var showSuccessAlert = false
     
     var body: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: 0) {
             Text("Change password")
                 .font(.system(size: 32, weight: .bold))
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top)
+                .padding(.top, 24)
+                .padding(.bottom, 32)
             
-            VStack(spacing: 16) {
+            VStack(spacing: 20) {
                 SecureField("Current password", text: $viewModel.currentPassword)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .textFieldStyle(CustomTextFieldStyle())
                     .textContentType(.password)
                 
                 SecureField("New password", text: $viewModel.newPassword)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .textFieldStyle(CustomTextFieldStyle())
                     .textContentType(.newPassword)
                 
                 SecureField("Re-enter new password", text: $viewModel.confirmPassword)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .textFieldStyle(CustomTextFieldStyle())
                     .textContentType(.newPassword)
             }
+            .padding(.bottom, 24)
             
-            // Password criteria list
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Password requirements:")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                    .padding(.bottom, 4)
+                
                 ForEach(Array(viewModel.passwordCriteria.keys), id: \.self) { criteria in
-                    HStack {
+                    HStack(spacing: 12) {
                         Image(systemName: viewModel.passwordCriteria[criteria] ?? false ? 
                               "checkmark.circle.fill" : "xmark.circle.fill")
                             .foregroundColor(viewModel.passwordCriteria[criteria] ?? false ? 
                                            .green : .red)
                         Text(criteria.rawValue)
-                            .font(.caption)
+                            .font(.subheadline)
                             .foregroundColor(viewModel.passwordCriteria[criteria] ?? false ? 
                                            .green : .red)
                     }
                 }
             }
-            .padding(.vertical)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.bottom, 16)
             
             if let error = viewModel.errorMessage {
                 Text(error)
                     .foregroundColor(.red)
                     .font(.caption)
+                    .padding(.bottom, 16)
             }
+            
+            Spacer()
             
             Button(action: {
                 viewModel.changePassword()
@@ -57,18 +67,18 @@ struct ChangePasswordView: View {
                         .progressViewStyle(CircularProgressViewStyle(tint: .white))
                 } else {
                     Text("Change password")
+                        .font(.system(size: 17, weight: .semibold))
                 }
             }
             .frame(maxWidth: .infinity)
-            .padding()
+            .frame(height: 50)
             .background(viewModel.isFormValid ? Color.blue : Color.gray.opacity(0.3))
             .foregroundColor(.white)
-            .cornerRadius(8)
+            .cornerRadius(25)
+            .padding(.bottom, 32)
             .disabled(!viewModel.isFormValid || viewModel.isLoading)
-            
-            Spacer()
         }
-        .padding()
+        .padding(.horizontal, 24)
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
