@@ -143,6 +143,8 @@ struct AddCardView: View {
                 Button(action: {
                     Task {
                         await viewModel.addCard()
+                        NotificationCenter.default.post(name: .cardAdded, object: nil)
+                        dismiss()
                     }
                 }) {
                     HStack {
@@ -175,8 +177,5 @@ struct AddCardView: View {
             }
         }
         .navigationBarHidden(true)
-        .onReceive(NotificationCenter.default.publisher(for: .dismissAddCard)) { _ in
-            dismiss()
-        }
     }
 } 
