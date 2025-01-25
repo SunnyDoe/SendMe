@@ -36,11 +36,6 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		5D073D102D2EC1E0002D6220 /* SendMeTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SendMeTests;
-			sourceTree = "<group>";
-		};
 		5DBE665B2D25743D000DCF29 /* SendMe */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -74,7 +69,6 @@
 			isa = PBXGroup;
 			children = (
 				5DBE665B2D25743D000DCF29 /* SendMe */,
-				5D073D102D2EC1E0002D6220 /* SendMeTests */,
 				5DBE665A2D25743D000DCF29 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -103,9 +97,6 @@
 			);
 			dependencies = (
 				5D073D142D2EC1E0002D6220 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				5D073D102D2EC1E0002D6220 /* SendMeTests */,
 			);
 			name = SendMeTests;
 			packageProductDependencies = (
