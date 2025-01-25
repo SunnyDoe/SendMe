@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PaymentMethodsView: View {
-    @ObservedObject var viewModel: PaymentMethodsViewModel
+    @StateObject var viewModel: PaymentMethodsViewModel
     @State private var showSuccessToast = false
     @State private var showingAddCard = false
     
