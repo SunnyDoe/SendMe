@@ -18,6 +18,7 @@ struct RatingView: View {
                         .resizable()
                         .frame(width: 40, height: 40)
                         .foregroundColor(index <= selectedRating ? .yellow : .gray)
+                        .symbolEffect(.bounce, options: .repeat(index <= selectedRating ? 1: 0), value: selectedRating)
                         .onTapGesture {
                             selectedRating = index
                         }
