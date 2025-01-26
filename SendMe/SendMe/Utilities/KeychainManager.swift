@@ -14,6 +14,47 @@ class KeychainManager {
     
     private init() {}
     
+    func save(_ value: String, forKey key: String) {
+        let data = Data(value.utf8)
+        
+        delete(forKey: key)
+        
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key,
+            kSecValueData as String: data
+        ]
+        
+        SecItemAdd(query as CFDictionary, nil)
+    }
+    
+    func get(forKey key: String) -> String? {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key,
+            kSecReturnData as String: true,
+            kSecMatchLimit as String: kSecMatchLimitOne
+        ]
+        
+        var dataTypeRef: AnyObject?
+        let status = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
+        
+        if status == errSecSuccess, let data = dataTypeRef as? Data {
+            return String(data: data, encoding: .utf8)
+        }
+        return nil
+    }
+    
+    func delete(forKey key: String) {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key
+        ]
+        
+        SecItemDelete(query as CFDictionary)
+    }
+    
+    
     func saveCards(_ cards: [SavedCard]) throws {
         let encoder = JSONEncoder()
         let data = try encoder.encode(cards)
@@ -65,4 +106,4 @@ class KeychainManager {
             throw KeychainError.unknown(status)
         }
     }
-} 
+}
