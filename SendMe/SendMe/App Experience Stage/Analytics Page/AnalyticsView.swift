@@ -3,7 +3,7 @@ import Charts
 
 
 struct AnalyticsView: View {
-    @StateObject private var viewModel = AnalyticsViewModel()
+    @ObservedObject private var viewModel = AnalyticsViewModel()
     @State private var selectedTimeRange: TimeRange = .overall
     
     var body: some View {
@@ -69,8 +69,8 @@ struct AnalyticsView: View {
                                 .foregroundStyle(
                                     LinearGradient(
                                         colors: [
-                                            Color.blue.opacity(0.2),
-                                            Color.blue.opacity(0.05)
+                                            Color.green.opacity(0.2),
+                                            Color.green.opacity(0.05)
                                         ],
                                         startPoint: .top,
                                         endPoint: .bottom
@@ -127,7 +127,9 @@ struct AnalyticsView: View {
                         }
                         
                         ForEach(viewModel.categories) { category in
-                            CategoryRow(category: category)
+                            NavigationLink(destination: CategoryDetailView(category: category)) {
+                                CategoryRow(category: category)
+                            }
                         }
                     }
                     .padding(.horizontal)
