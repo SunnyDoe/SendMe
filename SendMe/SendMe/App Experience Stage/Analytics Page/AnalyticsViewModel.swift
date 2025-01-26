@@ -161,11 +161,6 @@ class AnalyticsViewModel: ObservableObject {
         }
     }
     
-    private func calculatePercentage(_ amount: Double, of total: Double) -> Double {
-        guard total > 0 else { return 0 }
-        return (amount / total) * 100
-    }
-    
     private func mapCategoryToIcon(_ category: String) -> String {
         switch category.lowercased() {
         case "bills": return "house.fill"
@@ -191,41 +186,5 @@ class AnalyticsViewModel: ObservableObject {
             return difference > 0 ? TrendIndicator.increase : TrendIndicator.decrease
         }
         return nil
-    }
-    
-    private func generateDynamicMonthlyData(from date: Date, to endDate: Date, timeRange: TimeRange) -> [MonthlySpending] {
-        let baseAmount = 1000.0
-        let trendMultiplier: Double
-        
-        switch timeRange {
-        case .week, .month, .year:
-            trendMultiplier = 0.9
-        case .threeMonths, .sixMonths:
-            trendMultiplier = 1.9
-        case .overall:
-            trendMultiplier = 1.76
-        }
-        
-        let calendar = Calendar.current
-        let monthFormatter = DateFormatter()
-        monthFormatter.dateFormat = timeRange == .overall ? "'YY" : "MMM"
-        
-        var result: [MonthlySpending] = []
-        var currentDate = date
-        
-        while currentDate <= endDate {
-            let progress = Double(calendar.dateComponents([.day], from: date, to: currentDate).day ?? 0) /
-                          Double(calendar.dateComponents([.day], from: date, to: endDate).day ?? 1)
-            
-            let trendFactor = pow(trendMultiplier, progress)
-            let amount = baseAmount * trendFactor
-            
-            let monthStr = monthFormatter.string(from: currentDate)
-            result.append(MonthlySpending(id: UUID(), month: monthStr, amount: amount, date: currentDate))
-            
-            currentDate = calendar.date(byAdding: .month, value: 1, to: currentDate) ?? currentDate
-        }
-        
-        return result
     }
 }
