@@ -34,7 +34,7 @@ class AnalyticsViewModel: ObservableObject {
             
             self.totalSpent = response.totalSpent["overall"] ?? 0
             updateMonthlyData(from: response.spendingDetails, for: currentTimeRange)
-            updateCategories(from: response)
+            updateCategories(for: currentTimeRange)
             
         } catch {
             print("Error fetching analytics data: \(error)")
@@ -48,12 +48,34 @@ class AnalyticsViewModel: ObservableObject {
         
         currentTimeRange = timeRange
         guard let data = analyticsData else { return }
+        
         self.totalSpent = data.totalSpent[timeRange.rawValue] ?? 0
+        
+        updateCategories(for: timeRange)
         
         if let details = analyticsData?.spendingDetails {
             updateMonthlyData(from: details, for: timeRange)
         }
     }
+
+    
+    private func updateCategories(for timeRange: TimeRange) {
+        guard let response = analyticsData else { return }
+        
+        let categorySpending = response.categorySpent[timeRange.rawValue] ?? [:]
+        let transactionCounts = response.transactionsCount[timeRange.rawValue] ?? [:]
+        
+        self.categories = categorySpending.map { category in
+            SpendingCategory(
+                id: UUID(),
+                name: category.key.replacingOccurrences(of: "_", with: " ").capitalized,
+                icon: mapCategoryToIcon(category.key),
+                amount: category.value,
+                transactionCount: transactionCounts[category.key] ?? 0
+            )
+        }.sorted { $0.amount > $1.amount } 
+    }
+
     
     private func updateMonthlyData(from details: [SpendingDetail], for timeRange: TimeRange) {
         if let cachedMonthlyData = cachedData[timeRange] {
@@ -147,18 +169,6 @@ class AnalyticsViewModel: ObservableObject {
         
         cachedData[timeRange] = generatedData
         self.monthlyData = generatedData
-    }
-    
-    private func updateCategories(from response: AnalyticsResponse) {
-        self.categories = response.categorySpent.map { category in
-            SpendingCategory(
-                id: UUID(),
-                name: category.key.replacingOccurrences(of: "_", with: " ").capitalized,
-                icon: mapCategoryToIcon(category.key),
-                amount: category.value,
-                transactionCount: response.spendingDetails.filter { $0.category == category.key }.count
-            )
-        }
     }
     
     private func mapCategoryToIcon(_ category: String) -> String {

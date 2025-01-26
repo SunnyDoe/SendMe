@@ -35,7 +35,7 @@ struct CategoryRow: View {
                 .font(.system(size: 17, weight: .semibold))
         }
         .padding()
-        .background(Color(.systemBackground))
+        .background(Color(.systemGray5))
         .cornerRadius(12)
     }
 }

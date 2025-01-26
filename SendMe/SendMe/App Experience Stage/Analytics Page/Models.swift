@@ -52,12 +52,14 @@ struct SpendingDetail: Codable {
 
 struct AnalyticsResponse: Codable {
     let totalSpent: [String: Double]
-    let categorySpent: [String: Double]
+    let categorySpent: [String: [String: Double]]
+    let transactionsCount: [String: [String: Int]]
     let spendingDetails: [SpendingDetail]
     
     enum CodingKeys: String, CodingKey {
         case totalSpent = "total_spent"
         case categorySpent = "category_spent"
+        case transactionsCount = "transactions_count"
         case spendingDetails = "spending_details"
     }
 }

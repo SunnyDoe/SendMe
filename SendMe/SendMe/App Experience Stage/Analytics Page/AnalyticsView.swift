@@ -124,13 +124,6 @@ struct AnalyticsView: View {
                             Text("By category")
                                 .font(.title3)
                                 .fontWeight(.semibold)
-                            
-                            Spacer()
-                            
-                            NavigationLink("View all") {
-//                                CategoryDetailView(categories: viewModel.categories)
-                            }
-                            .foregroundColor(.blue)
                         }
                         
                         ForEach(viewModel.categories) { category in
