@@ -3,6 +3,7 @@ import SwiftUI
 struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
     @Environment(\.dismiss) private var dismiss
+    @State private var showLogoutAlert = false
     
     var body: some View {
         VStack(spacing: 20) {
@@ -70,11 +71,22 @@ struct ProfileView: View {
                 }
                 
                 Button(action: {
-                    viewModel.signOut()
+                    showLogoutAlert = true
                 }) {
-                    SettingsRow(icon: "arrow.right.square", title: "Sign out", textColor: .red)
-                        .accessibilityLabel("Sign out")
-                        .accessibilityHint("Sign out of your account")
+                    HStack {
+                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                            .foregroundColor(.red)
+                        Text("Log out")
+                            .foregroundColor(.red)
+                    }
+                }
+                .alert("Log out", isPresented: $showLogoutAlert) {
+                    Button("Cancel", role: .cancel) { }
+                    Button("Log out", role: .destructive) {
+                        viewModel.signOut()
+                    }
+                } message: {
+                    Text("Are you sure you want to log out?")
                 }
             }
             .listStyle(InsetGroupedListStyle())
@@ -102,8 +114,6 @@ struct ProfileView: View {
         }
     }
 }
-
-
 
 #Preview {
     NavigationView {
