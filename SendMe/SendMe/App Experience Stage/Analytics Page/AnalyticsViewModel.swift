@@ -4,6 +4,7 @@ import SwiftUI
 
 class AnalyticsViewModel: ObservableObject {
     @Published var totalSpent: Double = 0
+    @Published var categoryTotalSpent: Double = 0
     @Published var monthlyData: [MonthlySpending] = []
     @Published var categories: [SpendingCategory] = []
     @Published var isLoading = false
@@ -12,6 +13,8 @@ class AnalyticsViewModel: ObservableObject {
     private var currentTimeRange: TimeRange = .overall
     
     private var cachedData: [TimeRange: [MonthlySpending]] = [:]
+    
+    @Published var categoryTransactions: [SpendingDetail] = []
     
     init() {
         Task {
@@ -33,7 +36,7 @@ class AnalyticsViewModel: ObservableObject {
             self.analyticsData = response
             
             self.totalSpent = response.totalSpent["overall"] ?? 0
-            updateMonthlyData(from: response.spendingDetails, for: currentTimeRange)
+            updateMonthlyData(from: response.spendingDetailsOverall, for: currentTimeRange)
             updateCategories(for: currentTimeRange)
             
         } catch {
@@ -53,11 +56,26 @@ class AnalyticsViewModel: ObservableObject {
         
         updateCategories(for: timeRange)
         
-        if let details = analyticsData?.spendingDetails {
-            updateMonthlyData(from: details, for: timeRange)
+        let details = getSpendingDetails(for: timeRange, from: data)
+        updateMonthlyData(from: details, for: timeRange)
+    }
+    
+    private func getSpendingDetails(for timeRange: TimeRange, from data: AnalyticsResponse) -> [SpendingDetail] {
+        switch timeRange {
+        case .week:
+            return data.spendingDetailsWeek
+        case .month:
+            return data.spendingDetailsMonth
+        case .threeMonths:
+            return data.spendingDetailsThreeMonths
+        case .sixMonths:
+            return data.spendingDetailsSixMonths
+        case .year:
+            return data.spendingDetailsYear
+        case .overall:
+            return data.spendingDetailsOverall
         }
     }
-
     
     private func updateCategories(for timeRange: TimeRange) {
         guard let response = analyticsData else { return }
@@ -171,7 +189,7 @@ class AnalyticsViewModel: ObservableObject {
         self.monthlyData = generatedData
     }
     
-    private func mapCategoryToIcon(_ category: String) -> String {
+    func mapCategoryToIcon(_ category: String) -> String {
         switch category.lowercased() {
         case "bills": return "house.fill"
         case "eating_out": return "fork.knife"
@@ -196,5 +214,25 @@ class AnalyticsViewModel: ObservableObject {
             return difference > 0 ? TrendIndicator.increase : TrendIndicator.decrease
         }
         return nil
+    }
+    
+    func updateCategoryData(for categoryName: String, timeRange: TimeRange) {
+        guard let response = analyticsData else { return }
+        let categoryKey = categoryName.lowercased().replacingOccurrences(of: " ", with: "_")
+        
+        let categorySpending = response.categorySpent[timeRange.rawValue] ?? [:]
+        self.categoryTotalSpent = categorySpending[categoryKey] ?? 0
+        
+        let details = getSpendingDetails(for: timeRange, from: response)
+        
+        let filteredTransactions = details.filter {
+            $0.category == categoryKey 
+        }
+        
+        self.categoryTransactions = filteredTransactions.sorted {
+            $0.date > $1.date
+        }
+        
+        updateMonthlyData(from: filteredTransactions, for: timeRange)
     }
 }

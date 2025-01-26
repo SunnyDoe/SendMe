@@ -23,7 +23,7 @@ struct CategoryDetailView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("$\(viewModel.totalSpent, specifier: "%.2f")")
+                    Text("$\(viewModel.categoryTotalSpent, specifier: "%.2f")")
                         .font(.system(size: 32, weight: .bold))
                     Text("Total spent")
                         .font(.subheadline)
@@ -63,7 +63,7 @@ struct CategoryDetailView: View {
                     ForEach(TimeRange.allCases) { range in
                         Button(action: {
                             selectedTimeRange = range
-                            viewModel.updateTotalSpent(for: range)
+                            viewModel.updateCategoryData(for: category.name, timeRange: range)
                         }) {
                             Text(range.title)
                                 .font(.system(size: 15))
@@ -84,12 +84,20 @@ struct CategoryDetailView: View {
             .padding(.vertical, 8)
             
             List {
-                ForEach(viewModel.monthlyData, id: \.id) { transaction in
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(transaction.month)
+                ForEach(viewModel.categoryTransactions, id: \.date) { transaction in
+                    HStack {
+                        Image(systemName: viewModel.mapCategoryToIcon(transaction.category))
+                            .foregroundColor(.blue)
+                            .font(.system(size: 20))
+                            .frame(width: 32)
+                        
+                        Text(formatDate(transaction.date))
                             .font(.system(size: 17))
+                        
+                        Spacer()
+                        
                         Text("$\(transaction.amount, specifier: "%.2f")")
-                            .font(.system(size: 15))
+                            .font(.system(size: 17))
                             .foregroundColor(.gray)
                     }
                     .padding(.vertical, 8)
@@ -101,7 +109,24 @@ struct CategoryDetailView: View {
         .onAppear {
             Task {
                 await viewModel.fetchAnalyticsData()
+                viewModel.updateCategoryData(for: category.name, timeRange: selectedTimeRange)
             }
         }
+        .onChange(of: selectedTimeRange) { newTimeRange in
+            viewModel.updateCategoryData(for: category.name, timeRange: newTimeRange)
+        }
+    }
+    
+    private func formatDate(_ dateString: String) -> String {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateFormat = "d MMM yyyy"
+        
+        if let date = inputFormatter.date(from: dateString) {
+            return outputFormatter.string(from: date)
+        }
+        return dateString
     }
 } 

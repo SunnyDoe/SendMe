@@ -54,13 +54,23 @@ struct AnalyticsResponse: Codable {
     let totalSpent: [String: Double]
     let categorySpent: [String: [String: Double]]
     let transactionsCount: [String: [String: Int]]
-    let spendingDetails: [SpendingDetail]
+    let spendingDetailsWeek: [SpendingDetail]
+    let spendingDetailsMonth: [SpendingDetail]
+    let spendingDetailsThreeMonths: [SpendingDetail]
+    let spendingDetailsSixMonths: [SpendingDetail]
+    let spendingDetailsYear: [SpendingDetail]
+    let spendingDetailsOverall: [SpendingDetail]
     
     enum CodingKeys: String, CodingKey {
         case totalSpent = "total_spent"
         case categorySpent = "category_spent"
         case transactionsCount = "transactions_count"
-        case spendingDetails = "spending_details"
+        case spendingDetailsWeek = "spending_details_1_week"
+        case spendingDetailsMonth = "spending_details_1_month"
+        case spendingDetailsThreeMonths = "spending_details_3_months"
+        case spendingDetailsSixMonths = "spending_details_6_months"
+        case spendingDetailsYear = "spending_details_1_year"
+        case spendingDetailsOverall = "spending_details_overall"
     }
 }
 
