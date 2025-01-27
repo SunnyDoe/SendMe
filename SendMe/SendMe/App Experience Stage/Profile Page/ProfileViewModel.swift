@@ -8,6 +8,7 @@ final class ProfileViewModel: ObservableObject {
     @Published var showingPrivacySettings = false
     @Published var showingEditProfile = false
     private var cancellables = Set<AnyCancellable>()
+    private let keychain = KeychainManager.shared
     
     init() {
         loadUserProfile()
@@ -46,28 +47,32 @@ final class ProfileViewModel: ObservableObject {
     }
     
     func signOut() {
-        do {
-            try Auth.auth().signOut()
-            UserDefaults.standard.set(false, forKey: "isLoggedIn")
-            
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let window = windowScene.windows.first {
-                let signInView = SignInView()
-                let navigationController = UINavigationController(rootViewController: signInView)
-                navigationController.modalPresentationStyle = .fullScreen
-                
-                window.rootViewController = navigationController
-                
-                UIView.transition(with: window,
-                                  duration: 0.3,
-                                  options: .transitionCrossDissolve,
-                                  animations: nil,
-                                  completion: nil)
+            do {
+                try Auth.auth().signOut()
+
+                keychain.delete(forKey: "userEmail")
+                keychain.delete(forKey: "userPassword")
+
+                UserDefaults.standard.set(false, forKey: "isLoggedIn")
+
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let window = windowScene.windows.first {
+                    let signInView = SignInView()
+                    let navigationController = UINavigationController(rootViewController: signInView)
+                    navigationController.modalPresentationStyle = .fullScreen
+                    
+                    window.rootViewController = navigationController
+                    
+                    UIView.transition(with: window,
+                                      duration: 0.3,
+                                      options: .transitionCrossDissolve,
+                                      animations: nil,
+                                      completion: nil)
+                }
+            } catch {
+                print("Error signing out: \(error.localizedDescription)")
             }
-        } catch {
-            print("Error signing out: \(error.localizedDescription)")
         }
-    }
     
     
     func showPrivacySettings() {

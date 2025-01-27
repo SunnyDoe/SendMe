@@ -61,7 +61,6 @@ class ChangePasswordViewModel: ObservableObject {
         passwordCriteria[.notSameAsOld] = !new.isEmpty && new != current
         passwordCriteria[.passwordsMatch] = !confirm.isEmpty && new == confirm
         
-        // Email/name validation will be added when implementing changePassword
         passwordCriteria[.noNameOrEmail] = true
     }
     
@@ -76,7 +75,6 @@ class ChangePasswordViewModel: ObservableObject {
             return
         }
         
-        // First, reauthenticate the user
         let credential = EmailAuthProvider.credential(
             withEmail: user.email ?? "",
             password: currentPassword
@@ -91,14 +89,12 @@ class ChangePasswordViewModel: ObservableObject {
                 return
             }
             
-            // Then change the password
             user.updatePassword(to: self?.newPassword ?? "") { [weak self] error in
                 DispatchQueue.main.async {
                     self?.isLoading = false
                     if let error = error {
                         self?.errorMessage = error.localizedDescription
                     } else {
-                        // Password successfully changed
                         NotificationCenter.default.post(name: .passwordChanged, object: nil)
                     }
                 }
