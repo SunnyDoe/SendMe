@@ -27,6 +27,11 @@ struct DashboardView: View {
                             .sheet(isPresented: $viewModel.showAllTransactions) {
                                 AllTransactionsView()
                             }
+                            
+                            if let monthlyExpense = viewModel.monthlyExpense {
+                                MonthlyExpenseSection(monthlyExpense: monthlyExpense)
+                                    .padding(.horizontal)
+                            }
                         }
                     }
                 }

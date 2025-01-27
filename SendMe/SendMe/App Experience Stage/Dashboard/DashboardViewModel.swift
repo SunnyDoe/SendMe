@@ -11,6 +11,7 @@ class DashboardViewModel: ObservableObject {
     @Published var recentPayees: [Payee] = []
     @Published var spendingData: [Double] = [20, 40, 60, 45, 85, 65, 90, 110, 85, 120]
     @Published var showAllTransactions = false
+    @Published var monthlyExpense: MonthlyExpense?
     
     private let db = Firestore.firestore()
     
@@ -18,6 +19,7 @@ class DashboardViewModel: ObservableObject {
         Task {
             await fetchBalance()
             await fetchRecentTransactions()
+            await fetchMonthlyExpense()
         }
     }
     
@@ -67,23 +69,34 @@ class DashboardViewModel: ObservableObject {
         }
     }
     
+    @MainActor
+    func fetchMonthlyExpense() async {
+        do {
+            let document = try await db.collection("monthlyexpense")
+                .document("total")
+                .getDocument()
+            
+            if let data = document.data() {
+                self.monthlyExpense = MonthlyExpense(data: data)
+            }
+        } catch {
+            self.error = error
+            print("Error fetching monthly expense: \(error.localizedDescription)")
+        }
+    }
+    
     func addMoney() {
-        // Implementation coming soon
     }
     
     func requestMoney() {
-        // Implementation coming soon
     }
     
     func sendMoney() {
-        // Implementation coming soon
     }
     
     func search() {
-        // Implementation coming soon
     }
     
     func showNotifications() {
-        // Implementation coming soon
     }
 } 
