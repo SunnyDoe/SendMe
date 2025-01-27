@@ -18,9 +18,17 @@ struct CategoryDetailView: View {
                     .foregroundColor(.blue)
                 }
                 
-                Text(category.name)
-                    .font(.system(size: 32, weight: .bold))
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                HStack {
+                    Text(category.name)
+                        .font(.system(size: 32, weight: .bold))
+                    
+                    Spacer()
+                    
+                    Image(systemName: category.icon)
+                        .font(.system(size: 32))
+                        .foregroundColor(.blue)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Text("$\(viewModel.categoryTotalSpent, specifier: "%.2f")")
