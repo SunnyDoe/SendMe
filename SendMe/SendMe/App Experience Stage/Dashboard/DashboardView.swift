@@ -7,73 +7,35 @@ struct DashboardView: View {
         TabView(selection: $viewModel.selectedTab) {
             NavigationView {
                 ScrollView {
-                    VStack(spacing: 20) {
-                        VStack(spacing: 8) {
-                            Text("$\(viewModel.balance, specifier: "%.2f")")
-                                .font(.system(size: 40, weight: .bold))
-                            Text("Total balance")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        }
-                        .padding(.top)
+                    VStack(spacing: 10) {
+                        BalanceSection(
+                            balance: viewModel.balance,
+                            monthlySpending: viewModel.monthlySpending
+                        )
                         
-                        HStack(spacing: 16) {
-                            ActionButton(title: "Add money", icon: "plus", action: viewModel.addMoney)
-                            ActionButton(title: "Request money", icon: "arrow.down", action: viewModel.requestMoney)
-                            ActionButton(title: "Send", icon: "arrow.up", action: viewModel.sendMoney)
-                        }
-                        .padding(.horizontal)
+                        ActionButtonsRow(
+                            addMoney: viewModel.addMoney,
+                            requestMoney: viewModel.requestMoney,
+                            sendMoney: viewModel.sendMoney
+                        )
                         
-                        VStack(alignment: .leading, spacing: 12) {
-                            HeaderWithViewAll(title: "Recent transactions")
-                            
-                            ForEach(viewModel.recentTransactions) { transaction in
-                                TransactionRow(transaction: transaction)
+                        if !viewModel.recentTransactions.isEmpty {
+                            RecentTransactionsSection(
+                                transactions: viewModel.recentTransactions,
+                                onViewAll: { viewModel.showAllTransactions = true }
+                            )
+                            .sheet(isPresented: $viewModel.showAllTransactions) {
+                                AllTransactionsView()
                             }
                         }
-                        .padding()
-                        
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("$\(viewModel.monthlySpending)")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                            Text("Spent this month")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                            
-                            SpendingChart(data: viewModel.spendingData)
-                                .frame(height: 100)
-                        }
-                        .padding()
-                        
-                        VStack(alignment: .leading, spacing: 12) {
-                            HeaderWithViewAll(title: "Recent payees")
-                            
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 20) {
-                                    ForEach(viewModel.recentPayees) { payee in
-                                        PayeeView(payee: payee)
-                                    }
-                                }
-                            }
-                        }
-                        .padding()
                     }
                 }
                 .navigationTitle("Home")
                 .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        HStack(spacing: 16) {
-                            Button(action: viewModel.search) {
-                                Image(systemName: "magnifyingglass")
-                                    .foregroundColor(.primary)
-                            }
-                            Button(action: viewModel.showNotifications) {
-                                Image(systemName: "bell")
-                                    .foregroundColor(.primary)
-                            }
-                        }
+                .refreshable {
+                    Task {
+                        await viewModel.fetchBalance()
+                        await viewModel.fetchRecentTransactions()
                     }
                 }
             }
@@ -113,7 +75,7 @@ struct PayeeView: View {
     
     var body: some View {
         VStack {
-            Image(payee.image)
+            Image(payee.image ?? "person.crop.circle")
                 .resizable()
                 .frame(width: 50, height: 50)
                 .clipShape(Circle())
@@ -125,6 +87,7 @@ struct PayeeView: View {
 
 struct HeaderWithViewAll: View {
     let title: String
+    let action: () -> Void
     
     var body: some View {
         HStack {
@@ -132,6 +95,7 @@ struct HeaderWithViewAll: View {
                 .font(.headline)
             Spacer()
             Button("View all") {
+                action()
             }
             .font(.subheadline)
             .foregroundColor(.blue)
