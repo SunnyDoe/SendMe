@@ -12,6 +12,7 @@ class DashboardViewModel: ObservableObject {
     @Published var spendingData: [Double] = [20, 40, 60, 45, 85, 65, 90, 110, 85, 120]
     @Published var showAllTransactions = false
     @Published var monthlyExpense: MonthlyExpense?
+    @Published var showAddMoney = false
     
     private let db = Firestore.firestore()
     
@@ -86,6 +87,7 @@ class DashboardViewModel: ObservableObject {
     }
     
     func addMoney() {
+        showAddMoney = true
     }
     
     func requestMoney() {

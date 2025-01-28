@@ -36,7 +36,10 @@ struct DashboardView: View {
                             if !viewModel.recentTransactions.isEmpty {
                                 RecentPayeesSection(transactions: viewModel.recentTransactions)
                                     .padding(.horizontal)
-                            } 
+                                    .sheet(isPresented: $viewModel.showAddMoney) {
+                                        AddMoneyView()
+                                    }
+                            }
                         }
                     }
                 }
