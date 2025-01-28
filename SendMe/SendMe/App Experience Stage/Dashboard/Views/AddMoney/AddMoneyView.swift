@@ -89,7 +89,6 @@ struct AddMoneyView: View {
             Button {
                 Task {
                     await viewModel.handlePayment()
-                    dismiss()
                 }
             } label: {
                 Text("Pay")
@@ -110,6 +109,38 @@ struct AddMoneyView: View {
             Button("OK", role: .cancel) { }
         } message: {
             Text("Currently, only USD is available for top-ups.")
+        }
+        .alert("No Payment Method", isPresented: $viewModel.showNoCardAlert) {
+            Button("OK") {
+                NotificationCenter.default.post(name: .init("ShowPaymentMethods"), object: nil)
+                dismiss()
+            }
+        } message: {
+            Text("Please add a payment method in Profile > Payment Methods > Add Payment Method")
+        }
+        .overlay {
+            if viewModel.showPaymentSuccessToast {
+                VStack {
+                    Spacer()
+                    HStack {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundColor(.green)
+                        Text("Thank you! Your card ending in \(viewModel.lastChargedCard?.lastFourDigits ?? "") was charged.")
+                            .foregroundColor(.white)
+                    }
+                    .padding()
+                    .background(Color.black.opacity(0.8))
+                    .cornerRadius(25)
+                    .padding(.bottom, 100)
+                }
+                .transition(.move(edge: .bottom))
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        viewModel.showPaymentSuccessToast = false
+                        dismiss()
+                    }
+                }
+            }
         }
     }
 }
