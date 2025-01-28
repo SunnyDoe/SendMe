@@ -23,6 +23,7 @@ struct DashboardView: View {
                             RecentTransactionsSection(
                                 transactions: viewModel.recentTransactions,
                                 onViewAll: { viewModel.showAllTransactions = true }
+                                
                             )
                             .sheet(isPresented: $viewModel.showAllTransactions) {
                                 AllTransactionsView()
@@ -32,6 +33,10 @@ struct DashboardView: View {
                                 MonthlyExpenseSection(monthlyExpense: monthlyExpense)
                                     .padding(.horizontal)
                             }
+                            if !viewModel.recentTransactions.isEmpty {
+                                RecentPayeesSection(transactions: viewModel.recentTransactions)
+                                    .padding(.horizontal)
+                            } 
                         }
                     }
                 }

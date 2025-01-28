@@ -53,7 +53,7 @@ class DashboardViewModel: ObservableObject {
         do {
             let snapshot = try await db.collection("transactions")
                 .order(by: "date", descending: true)
-                .limit(to: 3)
+                .limit(to: 4)
                 .getDocuments()
             
             let transactions = snapshot.documents.compactMap { document in
