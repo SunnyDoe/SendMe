@@ -2,7 +2,7 @@ import SwiftUI
 
 struct PaymentSelectionView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject var viewModel: PaymentMethodsViewModel
+    @ObservedObject var viewModel: PaymentMethodsViewModel
     @State private var selectedCard: SavedCard?
     @State private var isLoading = false
     @State private var showSuccessMessage = false

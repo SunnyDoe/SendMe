@@ -3,7 +3,7 @@ import SwiftUI
 struct PlanSelectionView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var selectedPlan: PlanType = .yearly
-    @StateObject private var paymentMethodsViewModel = PaymentMethodsViewModel()
+    @ObservedObject private var paymentMethodsViewModel = PaymentMethodsViewModel()
     @State private var showingPaymentSelection = false
 
     var body: some View {

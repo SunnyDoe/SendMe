@@ -114,10 +114,6 @@ final class FaceIDSetupView: UIViewController {
         present(navigationController, animated: true)
     }
     
-    private func navigateToMainApp() {
-  
-    }
-    
     private func showError(_ message: String) {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))

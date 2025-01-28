@@ -8,11 +8,6 @@
 import UIKit
 
 final class GetStartedViewModel {
-    var onGetStarted: (() -> Void)?
-    
-    func proceed() {
-        onGetStarted?()
-    }
     
     func navigateToSignIn(completion: @escaping (UINavigationController) -> Void) {
         let signInView = SignInView()
