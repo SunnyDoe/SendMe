@@ -26,9 +26,6 @@ struct ProfileView: View {
                 Text(viewModel.state.username)
                     .font(.title2)
                     .fontWeight(.semibold)
-                
-                Text(viewModel.state.handle)
-                    .foregroundColor(.gray)
             }
             .padding(.bottom)
             

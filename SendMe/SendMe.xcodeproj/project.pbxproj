@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5DBB422D2D480B5100911E73 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5DBB422C2D480B5100911E73 /* FirebaseFirestore */; };
 		5DBE66812D2BFCA0000DCF29 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 5DBE66802D2BFCA0000DCF29 /* FirebaseAuth */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +60,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5DBE66812D2BFCA0000DCF29 /* FirebaseAuth in Frameworks */,
+				5DBB422D2D480B5100911E73 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,6 +125,7 @@
 			name = SendMe;
 			packageProductDependencies = (
 				5DBE66802D2BFCA0000DCF29 /* FirebaseAuth */,
+				5DBB422C2D480B5100911E73 /* FirebaseFirestore */,
 			);
 			productName = SendMe;
 			productReference = 5DBE66592D25743D000DCF29 /* SendMe.app */;
@@ -464,6 +467,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		5DBB422C2D480B5100911E73 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5DBE667F2D2BFCA0000DCF29 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
 		5DBE66802D2BFCA0000DCF29 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5DBE667F2D2BFCA0000DCF29 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

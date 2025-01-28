@@ -14,10 +14,7 @@ final class ProfileViewModel: ObservableObject {
         loadUserProfile()
         setupNotificationObservers()
         
-        if UserDefaults.standard.string(forKey: "userHandle") == nil {
-            let handle = ProfileModel.generateUniqueHandle()
-            UserDefaults.standard.saveHandle(handle)
-        }
+
     }
     
     private func setupNotificationObservers() {
@@ -30,21 +27,16 @@ final class ProfileViewModel: ObservableObject {
     
     func loadUserProfile() {
         let firstName = UserDefaults.standard.string(forKey: UserDefaults.ProfileKeys.firstName) ?? "Your Name"
-        let handle = UserDefaults.standard.string(forKey: "userHandle") ?? ProfileModel.generateUniqueHandle()
         
         state = ProfileModel(
             username: firstName,
-            handle: handle,
             avatar: UserDefaults.standard.savedAvatar,
             isLoading: false,
-            error: nil,
-            selectedTab: state.selectedTab
+            error: nil
         )
     }
     
-    func selectTab(_ tab: ProfileModel.ProfileTab) {
-        state.selectedTab = tab
-    }
+
     
     func signOut() {
             do {
