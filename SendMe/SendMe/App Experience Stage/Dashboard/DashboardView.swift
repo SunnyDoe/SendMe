@@ -14,9 +14,7 @@ struct DashboardView: View {
                         )
                         
                         ActionButtonsRow(
-                            addMoney: viewModel.addMoney,
-                            requestMoney: viewModel.requestMoney,
-                            sendMoney: viewModel.sendMoney
+                            addMoney: viewModel.addMoney
                         )
                         
                         if !viewModel.recentTransactions.isEmpty {
