@@ -3,13 +3,12 @@ import FirebaseFirestore
 
 class DashboardViewModel: ObservableObject {
     @Published var balance: Double = 0
-    @Published var monthlySpending: Int = 1250
+    @Published var monthlySpending: Int = 0
     @Published var selectedTab: Int = 0
     @Published var isLoading = false
     @Published var error: Error?
     @Published var recentTransactions: [Transaction] = []
     @Published var recentPayees: [Payee] = []
-    @Published var spendingData: [Double] = [20, 40, 60, 45, 85, 65, 90, 110, 85, 120]
     @Published var showAllTransactions = false
     @Published var monthlyExpense: MonthlyExpense?
     @Published var showAddMoney = false
@@ -88,17 +87,5 @@ class DashboardViewModel: ObservableObject {
     
     func addMoney() {
         showAddMoney = true
-    }
-    
-    func requestMoney() {
-    }
-    
-    func sendMoney() {
-    }
-    
-    func search() {
-    }
-    
-    func showNotifications() {
     }
 } 
