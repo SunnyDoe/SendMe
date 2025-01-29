@@ -6,6 +6,8 @@ struct ChatView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showActionSheet = false
     @State private var showRequestMoneyView = false
+    @State private var showSendMoneyView = false
+    @State private var shouldRefresh = false
 
     
     var body: some View {
@@ -94,8 +96,15 @@ struct ChatView: View {
         .task {
             await viewModel.fetchMessages(for: user.id)
         }
+        .onChange(of: shouldRefresh) { _ in
+            Task {
+                await viewModel.fetchMessages(for: user.id)
+                shouldRefresh = false
+            }
+        }
         .confirmationDialog("", isPresented: $showActionSheet, titleVisibility: .hidden) {
             Button("Send money") {
+                showSendMoneyView = true
             }
             
             Button("Request money") {
@@ -104,8 +113,15 @@ struct ChatView: View {
             
             Button("Cancel", role: .cancel) { }
         }
+        .sheet(isPresented: $showSendMoneyView) {
+            SendMoneyView(user: user, onCompletion: {
+                shouldRefresh = true
+            })
+        }
         .sheet(isPresented: $showRequestMoneyView) {
-            RequestMoneyView(user: user)
+            RequestMoneyView(user: user, onCompletion: {
+                shouldRefresh = true
+            })
         }
     }
 }

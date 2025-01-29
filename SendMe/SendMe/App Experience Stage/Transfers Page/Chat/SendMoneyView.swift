@@ -1,10 +1,10 @@
 import SwiftUI
 
-struct RequestMoneyView: View {
+struct SendMoneyView: View {
     let user: User
     let onCompletion: () -> Void
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel = RequestMoneyViewModel()
+    @StateObject private var viewModel = SendMoneyViewModel()
     
     private let currencies = [("USD", "🇺🇸")]
     
@@ -17,7 +17,7 @@ struct RequestMoneyView: View {
                             .foregroundColor(.blue)
                     }
                     Spacer()
-                    Text("Request Money")
+                    Text("Send Money")
                         .font(.system(size: 17, weight: .semibold))
                     Spacer()
                 }
@@ -79,6 +79,7 @@ struct RequestMoneyView: View {
                                         .stroke(Color(.systemGray4), lineWidth: 1)
                                 )
                             }
+                            
                             HStack {
                                 Text("$")
                                     .foregroundColor(.gray)
@@ -144,12 +145,12 @@ struct RequestMoneyView: View {
                 
                 Button(action: {
                     Task {
-                        await viewModel.sendMoneyRequest(to: user.id)
+                        await viewModel.sendMoney(to: user.id)
                         onCompletion()
                         dismiss()
                     }
                 }) {
-                    Text("Request")
+                    Text("Send")
                         .font(.system(size: 17, weight: .semibold))
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)

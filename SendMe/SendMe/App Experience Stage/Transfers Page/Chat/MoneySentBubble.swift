@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct MoneyRequestBubble: View {
+struct MoneySentBubble: View {
     let amount: Double
     let note: String?
     let timestamp: Date
@@ -8,7 +8,7 @@ struct MoneyRequestBubble: View {
     
     var body: some View {
         VStack(spacing: 12) {
-            Text("You requested")
+            Text("You sent")
                 .font(.system(size: 15))
                 .foregroundColor(.white)
             

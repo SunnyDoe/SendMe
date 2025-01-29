@@ -13,21 +13,16 @@ struct Message: Identifiable {
     let status: String?
     
     init?(id: String, data: [String: Any]) {
-        guard let timestamp = data["timestamp"] as? Timestamp,
-              let senderId = data["senderId"] as? String else {
-            return nil
-        }
-        
         self.id = id
-        self.timestamp = timestamp.dateValue()
-        self.isFromCurrentUser = senderId == Auth.auth().currentUser?.uid
+        self.isFromCurrentUser = data["senderId"] as? String == Auth.auth().currentUser?.uid
+        self.timestamp = (data["timestamp"] as? Timestamp)?.dateValue() ?? Date()
         self.type = data["type"] as? String ?? "text"
         
-        if self.type == "moneyRequest" {
+        if self.type == "moneyRequest" || self.type == "moneySent" {
             self.amount = data["amount"] as? Double
             self.note = data["note"] as? String
             self.status = data["status"] as? String
-            self.text = "Money Request: $\(data["amount"] as? Double ?? 0)"
+            self.text = ""
         } else {
             self.text = data["text"] as? String ?? ""
             self.amount = nil
