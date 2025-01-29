@@ -4,6 +4,9 @@ struct ChatView: View {
     let user: User
     @StateObject private var viewModel = ChatViewModel()
     @Environment(\.dismiss) private var dismiss
+    @State private var showActionSheet = false
+    @State private var showRequestMoneyView = false
+
     
     var body: some View {
         VStack(spacing: 0) {
@@ -17,6 +20,13 @@ struct ChatView: View {
                     .font(.system(size: 17, weight: .semibold))
                 
                 Spacer()
+                
+                Button(action: { showActionSheet = true }) {
+                    Image(systemName: "ellipsis")
+                        .foregroundColor(.gray)
+                        .font(.system(size: 20))
+                }
+                .padding(.trailing, 8)
                 
                 AsyncImage(url: URL(string: user.profilePic)) { phase in
                     switch phase {
@@ -83,6 +93,19 @@ struct ChatView: View {
         .ignoresSafeArea(.keyboard) 
         .task {
             await viewModel.fetchMessages(for: user.id)
+        }
+        .confirmationDialog("", isPresented: $showActionSheet, titleVisibility: .hidden) {
+            Button("Send money") {
+            }
+            
+            Button("Request money") {
+                showRequestMoneyView = true
+            }
+            
+            Button("Cancel", role: .cancel) { }
+        }
+        .sheet(isPresented: $showRequestMoneyView) {
+            RequestMoneyView(user: user)
         }
     }
 }
