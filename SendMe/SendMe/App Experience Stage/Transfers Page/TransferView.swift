@@ -14,7 +14,7 @@ struct TransferView: View {
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.gray)
-                TextField("Search by name, phone, email", text: $viewModel.searchText)
+                TextField("Search by name,last name ", text: $viewModel.searchText)
                     .autocapitalization(.none)
             }
             .padding(10)
