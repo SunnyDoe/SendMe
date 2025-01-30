@@ -27,8 +27,6 @@ final class FaceIDSetupView: UIViewController {
         
         if let image = UIImage(named: "image2") {
             imageView.image = image
-        } else {
-            print("Error: Image 'image2' not found.")
         }
         
         imageView.contentMode = .scaleAspectFill
@@ -125,4 +123,3 @@ final class FaceIDSetupView: UIViewController {
         present(navigationController, animated: true)
     }
 } 
-

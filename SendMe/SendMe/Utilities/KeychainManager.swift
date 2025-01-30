@@ -8,7 +8,7 @@ enum KeychainError: Error {
     case invalidItemFormat
 }
 
-class KeychainManager {
+final class KeychainManager {
     static let shared = KeychainManager()
     private let service = "com.sendme.cards"
     
