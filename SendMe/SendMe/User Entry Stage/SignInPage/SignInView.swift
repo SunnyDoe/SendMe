@@ -180,6 +180,3 @@ final class SignInView: UIViewController {
     }
 }
 
-#Preview {
-    SignInView()
-}

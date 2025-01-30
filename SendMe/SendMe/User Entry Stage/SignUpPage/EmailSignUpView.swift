@@ -17,10 +17,8 @@ final class EmailSignUpView: UIViewController {
     
     private func setupNavigation() {
         navigationItem.title = ""
-        
         navigationController?.navigationBar.tintColor = .systemBlue
         navigationItem.hidesBackButton = false
-        
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
     }
@@ -28,12 +26,25 @@ final class EmailSignUpView: UIViewController {
     private func setupUI() {
         view.backgroundColor = .white
         
+        setupTitleLabel()
+        setupEmailTextField()
+        setupTermsAndConditions()
+        setupContinueButton()
+        setupErrorLabel()
+        
+        setupConstraints()
+    }
+    
+    private func setupTitleLabel() {
         let titleLabel = UILabel()
         titleLabel.text = "Enter your email\naddress"
         titleLabel.font = .systemFont(ofSize: 32, weight: .bold)
         titleLabel.numberOfLines = 2
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+        view.addSubview(titleLabel)
+    }
+    
+    private func setupEmailTextField() {
         emailTextField = UITextField()
         emailTextField.placeholder = "Email Address"
         emailTextField.borderStyle = .roundedRect
@@ -42,7 +53,10 @@ final class EmailSignUpView: UIViewController {
         emailTextField.autocapitalizationType = .none
         emailTextField.addTarget(self, action: #selector(emailChanged), for: .editingChanged)
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
-        
+        view.addSubview(emailTextField)
+    }
+    
+    private func setupTermsAndConditions() {
         let termsText = UILabel()
         termsText.text = "By tapping on continue button, you accept our"
         termsText.textColor = .gray
@@ -67,7 +81,11 @@ final class EmailSignUpView: UIViewController {
         termsStack.spacing = 4
         termsStack.alignment = .center
         termsStack.translatesAutoresizingMaskIntoConstraints = false
-        
+        view.addSubview(termsText)
+        view.addSubview(termsStack)
+    }
+    
+    private func setupContinueButton() {
         continueButton = UIButton(type: .system)
         continueButton.setTitle("Continue", for: .normal)
         continueButton.setTitleColor(.white, for: .normal)
@@ -77,7 +95,10 @@ final class EmailSignUpView: UIViewController {
         continueButton.isEnabled = false
         continueButton.translatesAutoresizingMaskIntoConstraints = false
         continueButton.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
-        
+        view.addSubview(continueButton)
+    }
+    
+    private func setupErrorLabel() {
         errorLabel = UILabel()
         errorLabel.textColor = .systemRed
         errorLabel.font = .systemFont(ofSize: 12)
@@ -86,12 +107,13 @@ final class EmailSignUpView: UIViewController {
         errorLabel.alpha = 0
         errorLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(errorLabel)
-        
-        view.addSubview(titleLabel)
-        view.addSubview(emailTextField)
-        view.addSubview(termsText)
-        view.addSubview(termsStack)
-        view.addSubview(continueButton)
+    }
+    
+    private func setupConstraints() {
+        let titleLabel = view.subviews[0]
+        let emailTextField = view.subviews[1]
+        let termsText = view.subviews[2]
+        let termsStack = view.subviews[3]
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
@@ -206,6 +228,3 @@ final class EmailSignUpView: UIViewController {
     }
 }
 
-#Preview {
-    UINavigationController(rootViewController: EmailSignUpView())
-}
