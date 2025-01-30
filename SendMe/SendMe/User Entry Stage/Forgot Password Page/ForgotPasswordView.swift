@@ -10,13 +10,16 @@ import FirebaseAuth
 
 final class ForgotPasswordView: UIViewController {
     private let viewModel = ForgotPasswordViewModel()
-    private var emailTextField: UITextField!
-    private var resetButton: UIButton!
+    private var emailTextField = UITextField()
+    private var resetButton = UIButton(type: .system)
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
+    private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupConstraints()
         setupCallbacks()
         setupNavigation()
     }
@@ -29,12 +32,10 @@ final class ForgotPasswordView: UIViewController {
     private func setupUI() {
         view.backgroundColor = .white
         
-        let titleLabel = UILabel()
         titleLabel.text = "Forgot your password?"
         titleLabel.font = .systemFont(ofSize: 32, weight: .bold)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        let subtitleLabel = UILabel()
         subtitleLabel.text = "Enter your email address and we'll send you a link to reset your password"
         subtitleLabel.font = .systemFont(ofSize: 15)
         subtitleLabel.textColor = .gray
@@ -42,14 +43,12 @@ final class ForgotPasswordView: UIViewController {
         subtitleLabel.textAlignment = .center
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        emailTextField = UITextField()
         emailTextField.placeholder = "Email"
         emailTextField.borderStyle = .roundedRect
         emailTextField.keyboardType = .emailAddress
         emailTextField.autocapitalizationType = .none
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         
-        resetButton = UIButton(type: .system)
         resetButton.setTitle("Send Reset Link", for: .normal)
         resetButton.setTitleColor(.white, for: .normal)
         resetButton.backgroundColor = .systemBlue
@@ -66,6 +65,8 @@ final class ForgotPasswordView: UIViewController {
         view.addSubview(subtitleLabel)
         view.addSubview(emailTextField)
         view.addSubview(resetButton)
+    }
+        private func setupConstraints() {
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
