@@ -37,7 +37,7 @@ struct AddMoneyView: View {
                             .font(.system(size: 14))
                     }
                     .padding()
-                    .frame(width: 130)
+                    .frame(width: 130, height: 50)
                     .background(Color(.systemBackground))
                     .cornerRadius(12)
                     .overlay(
@@ -58,7 +58,7 @@ struct AddMoneyView: View {
                         .font(.system(size: 24, weight: .medium))
                         .padding()
                 }
-                .frame(width: 200, height: 55)
+                .frame(width: 200, height: 50)
                 .background(Color(.systemBackground))
                 .cornerRadius(12)
                 .overlay(
