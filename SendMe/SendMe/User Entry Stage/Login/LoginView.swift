@@ -5,15 +5,21 @@ import FirebaseAuth
 final class LoginView: UIViewController {
     private let viewModel = LoginViewModel()
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
-    private var emailField: UITextField!
-    private var passwordField: UITextField!
-    private var loginButton: UIButton!
+    private var emailField =  UITextField()
+    private var passwordField = UITextField()
+    private var loginButton = UIButton(type: .system)
     private let scrollView = UIScrollView()
     private let contentView = UIView()
+    private let logoLabel = UILabel()
+    private let imageContainerView = UIView()
+    private let imageView = UIImageView()
+    private let titleLabel = UILabel()
+    private let forgotPasswordButton = UIButton(type: .system)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupConstraints()
         setupCallbacks()
         navigationController?.navigationBar.isHidden = true
     }
@@ -24,8 +30,68 @@ final class LoginView: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
         
+        logoLabel.text = "SendMe"
+        logoLabel.font = UIFont.boldSystemFont(ofSize: 28)
+        logoLabel.textColor = .black
+        logoLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageContainerView.backgroundColor = .systemGray6
+        imageContainerView.layer.cornerRadius = 20
+        imageContainerView.clipsToBounds = true
+        imageContainerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = UIImage(named: "image3")
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        titleLabel.text = "Welcome Back"
+        titleLabel.font = .systemFont(ofSize: 32, weight: .bold)
+        titleLabel.textAlignment = .center
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        emailField.placeholder = "Email"
+        emailField.borderStyle = .roundedRect
+        emailField.keyboardType = .emailAddress
+        emailField.autocapitalizationType = .none
+        emailField.translatesAutoresizingMaskIntoConstraints = false
+        
+        passwordField.placeholder = "Password"
+        passwordField.borderStyle = .roundedRect
+        passwordField.isSecureTextEntry = true
+        passwordField.translatesAutoresizingMaskIntoConstraints = false
+        
+        loginButton.setTitle("Log In", for: .normal)
+        loginButton.setTitleColor(.white, for: .normal)
+        loginButton.backgroundColor = .systemBlue
+        loginButton.layer.cornerRadius = 25
+        loginButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
+        loginButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        forgotPasswordButton.setTitle("Forgot Password?", for: .normal)
+        forgotPasswordButton.titleLabel?.font = .systemFont(ofSize: 15)
+        forgotPasswordButton.addTarget(self, action: #selector(forgotPasswordTapped), for: .touchUpInside)
+        forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageContainerView.addSubview(imageView)
+        loginButton.addSubview(activityIndicator)
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
+        contentView.addSubview(logoLabel)
+        contentView.addSubview(imageContainerView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(emailField)
+        contentView.addSubview(passwordField)
+        contentView.addSubview(loginButton)
+        contentView.addSubview(forgotPasswordButton)
+        
+    }
+    
+    private func setupConstraints() {
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -37,75 +103,8 @@ final class LoginView: UIViewController {
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
-        ])
-        
-        let logoLabel = UILabel()
-        logoLabel.text = "SendMe"
-        logoLabel.font = UIFont.boldSystemFont(ofSize: 28)
-        logoLabel.textColor = .black
-        logoLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        let imageContainerView = UIView()
-        imageContainerView.backgroundColor = .systemGray6
-        imageContainerView.layer.cornerRadius = 20
-        imageContainerView.clipsToBounds = true
-        imageContainerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.image = UIImage(named: "image3")
-        imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageContainerView.addSubview(imageView)
-        
-        let titleLabel = UILabel()
-        titleLabel.text = "Welcome Back"
-        titleLabel.font = .systemFont(ofSize: 32, weight: .bold)
-        titleLabel.textAlignment = .center
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        emailField = UITextField()
-        emailField.placeholder = "Email"
-        emailField.borderStyle = .roundedRect
-        emailField.keyboardType = .emailAddress
-        emailField.autocapitalizationType = .none
-        emailField.translatesAutoresizingMaskIntoConstraints = false
-        
-        passwordField = UITextField()
-        passwordField.placeholder = "Password"
-        passwordField.borderStyle = .roundedRect
-        passwordField.isSecureTextEntry = true
-        passwordField.translatesAutoresizingMaskIntoConstraints = false
-        
-        loginButton = UIButton(type: .system)
-        loginButton.setTitle("Log In", for: .normal)
-        loginButton.setTitleColor(.white, for: .normal)
-        loginButton.backgroundColor = .systemBlue
-        loginButton.layer.cornerRadius = 25
-        loginButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
-        loginButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.addSubview(activityIndicator)
-        
-        let forgotPasswordButton = UIButton(type: .system)
-        forgotPasswordButton.setTitle("Forgot Password?", for: .normal)
-        forgotPasswordButton.titleLabel?.font = .systemFont(ofSize: 15)
-        forgotPasswordButton.addTarget(self, action: #selector(forgotPasswordTapped), for: .touchUpInside)
-        forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        contentView.addSubview(logoLabel)
-        contentView.addSubview(imageContainerView)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(emailField)
-        contentView.addSubview(passwordField)
-        contentView.addSubview(loginButton)
-        contentView.addSubview(forgotPasswordButton)
-        
-        NSLayoutConstraint.activate([
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
             logoLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             logoLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             

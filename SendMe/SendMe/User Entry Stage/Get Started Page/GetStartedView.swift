@@ -11,37 +11,36 @@ import UIKit
 final class GetStartedView: UIViewController {
     
     private let viewModel = GetStartedViewModel()
+    private let logoLabel = UILabel()
+    private let imageContainerView = UIView()
+    private let imageView = UIImageView()
+    private let titleLabel = UILabel()
+    private let getStartedButton = UIButton(type: .system)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupConstraints()
     }
     
     private func setupUI() {
         view.backgroundColor = .white
         
-        let logoLabel = UILabel()
         logoLabel.text = "SendMe"
         logoLabel.font = UIFont.boldSystemFont(ofSize: 28)
         logoLabel.textColor = .black
         logoLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        let imageContainerView = UIView()
         imageContainerView.backgroundColor = .systemGray6
         imageContainerView.layer.cornerRadius = 20
         imageContainerView.clipsToBounds = true
         imageContainerView.translatesAutoresizingMaskIntoConstraints = false
         
-        let imageView = UIImageView()
         imageView.image = UIImage(named: "image4")
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        imageContainerView.addSubview(imageView)
-        view.addSubview(imageContainerView)
-        
-        let titleLabel = UILabel()
+                
         titleLabel.text = "Navigate your\nfinances with ease"
         titleLabel.font = UIFont.systemFont(ofSize: 32, weight: .bold)
         titleLabel.textColor = .black
@@ -49,7 +48,6 @@ final class GetStartedView: UIViewController {
         titleLabel.numberOfLines = 0
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        let getStartedButton = UIButton(type: .system)
         getStartedButton.setTitle("Get started", for: .normal)
         getStartedButton.setTitleColor(.white, for: .normal)
         getStartedButton.backgroundColor = .systemBlue
@@ -58,10 +56,15 @@ final class GetStartedView: UIViewController {
         getStartedButton.translatesAutoresizingMaskIntoConstraints = false
         getStartedButton.addTarget(self, action: #selector(getStartedTapped), for: .touchUpInside)
         
+        imageContainerView.addSubview(imageView)
         view.addSubview(logoLabel)
         view.addSubview(imageContainerView)
         view.addSubview(titleLabel)
         view.addSubview(getStartedButton)
+        
+    }
+    
+    private func setupConstraints() {
         
         NSLayoutConstraint.activate([
             logoLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
@@ -95,7 +98,3 @@ final class GetStartedView: UIViewController {
     }
 }
 
-
-#Preview {
-    GetStartedView()
-}

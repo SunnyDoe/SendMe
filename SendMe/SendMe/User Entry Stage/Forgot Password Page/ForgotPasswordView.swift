@@ -142,7 +142,3 @@ final class ForgotPasswordView: UIViewController {
         present(alert, animated: true)
     }
 }
-
-#Preview {
-    ForgotPasswordView()
-}

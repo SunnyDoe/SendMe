@@ -126,6 +126,3 @@ final class FaceIDSetupView: UIViewController {
     }
 } 
 
-#Preview {
-    FaceIDSetupView()
-}
