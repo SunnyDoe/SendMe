@@ -2,7 +2,7 @@ import SwiftUI
 import FirebaseFirestore
 
 @MainActor
-class AddMoneyViewModel: ObservableObject {
+final class AddMoneyViewModel: ObservableObject {
     @Published var amount: String = ""
     @Published var selectedCurrency = "USD"
     @Published var validationError: String?

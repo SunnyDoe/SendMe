@@ -3,7 +3,7 @@ import Charts
 
 
 struct AnalyticsView: View {
-    @ObservedObject private var viewModel = AnalyticsViewModel()
+    @StateObject private var viewModel = AnalyticsViewModel()
     @State private var selectedTimeRange: TimeRange = .overall
     
     var body: some View {
@@ -141,9 +141,4 @@ struct AnalyticsView: View {
             }
         }
     }
-}
-
-
-#Preview {
-    AnalyticsView()
 }

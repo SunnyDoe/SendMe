@@ -1,7 +1,7 @@
 import SwiftUI
 import FirebaseFirestore
 
-class AllTransactionsViewModel: ObservableObject {
+final class AllTransactionsViewModel: ObservableObject {
     @Published var transactions: [Transaction] = []
     @Published var isLoading = false
     @Published var error: Error?

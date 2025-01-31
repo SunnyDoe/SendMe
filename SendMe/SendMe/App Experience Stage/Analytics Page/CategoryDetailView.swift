@@ -3,7 +3,7 @@ import Charts
 
 struct CategoryDetailView: View {
     let category: SpendingCategory
-    @StateObject private var viewModel = AnalyticsViewModel()
+    @ObservedObject private var viewModel = AnalyticsViewModel()
     @State private var selectedTimeRange: TimeRange = .sixMonths
     @Environment(\.dismiss) private var dismiss
     
