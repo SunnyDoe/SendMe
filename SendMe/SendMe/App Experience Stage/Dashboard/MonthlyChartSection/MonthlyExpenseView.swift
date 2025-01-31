@@ -16,16 +16,28 @@ struct MonthlyExpenseSection: View {
                     .font(.system(size: 28, weight: .bold))
             }
             
-            Chart(monthlyExpense.categories) { category in
-                SectorMark(
-                    angle: .value("Amount", category.amount),
-                    innerRadius: .ratio(0.618),
-                    angularInset: 1.5
-                )
-                .foregroundStyle(colors[monthlyExpense.categories.firstIndex(where: { $0.id == category.id })! % colors.count])
+            if #available(iOS 17.0, *) {
+                Chart(monthlyExpense.categories) { category in
+                    SectorMark(
+                        angle: .value("Amount", category.amount),
+                        innerRadius: .ratio(0.618),
+                        angularInset: 1.5
+                    )
+                    .foregroundStyle(colors[monthlyExpense.categories.firstIndex(where: { $0.id == category.id })! % colors.count])
+                }
+                .frame(height: 200)
+                .padding(.vertical)
+            } else {
+                Chart(monthlyExpense.categories) { category in
+                    BarMark(
+                        x: .value("Category", category.name),
+                        y: .value("Amount", category.amount)
+                    )
+                    .foregroundStyle(colors[monthlyExpense.categories.firstIndex(where: { $0.id == category.id })! % colors.count])
+                }
+                .frame(height: 200)
+                .padding(.vertical)
             }
-            .frame(height: 200)
-            .padding(.vertical)
             
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 6) {
                 ForEach(Array(monthlyExpense.categories.enumerated()), id: \.element.id) { index, category in
