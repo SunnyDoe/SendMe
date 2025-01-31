@@ -2,6 +2,9 @@ import SwiftUI
 
 struct InviteFriendsView: View {
     @Environment(\.dismiss) private var dismiss
+    @StateObject private var viewModel = InviteFriendsViewModel()
+    @State private var showToast = false
+    @State private var showAlert = false
     
     var body: some View {
         VStack(spacing: 24) {
@@ -13,10 +16,9 @@ struct InviteFriendsView: View {
                     }
                     .foregroundColor(.blue)
                 }
-                .accessibilityLabel("Go back")
                 
                 Spacer()
-
+                
             }
             .padding(.horizontal)
             
@@ -24,7 +26,6 @@ struct InviteFriendsView: View {
                 Text("Invite friends and\nget $25")
                     .font(.system(size: 40, weight: .bold))
                     .multilineTextAlignment(.center)
-                    .accessibilityLabel("Invite friends and get twenty five dollars")
                 
                 Text("You can add another account later on, too.")
                     .foregroundColor(.gray)
@@ -35,7 +36,6 @@ struct InviteFriendsView: View {
             VStack(spacing: 12) {
                 Text("1 out of 3")
                     .font(.system(size: 17, weight: .semibold))
-                    .accessibilityLabel("Progress: one out of three invites")
                 
                 Text("Invite friends and earn reward when 3\nfriends send over $100 in one go.")
                     .multilineTextAlignment(.center)
@@ -63,7 +63,9 @@ struct InviteFriendsView: View {
             Spacer()
             
             VStack(spacing: 12) {
-                Button(action: {}) {
+                Button(action: {
+                    showAlert = true 
+                }) {
                     Text("Share your link")
                         .font(.system(size: 17, weight: .semibold))
                         .foregroundColor(.white)
@@ -72,9 +74,15 @@ struct InviteFriendsView: View {
                         .background(Color.blue)
                         .cornerRadius(25)
                 }
-                .accessibilityHint("Share your referral link with friends")
                 
-                Button(action: {}) {
+                Button(action: {
+                    viewModel.copyLink()
+                    showToast = true
+                    Task {
+                        try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
+                        showToast = false
+                    }
+                }) {
                     Text("Copy link")
                         .font(.system(size: 17, weight: .semibold))
                         .foregroundColor(.blue)
@@ -86,7 +94,6 @@ struct InviteFriendsView: View {
                                 .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                         )
                 }
-                .accessibilityHint("Copy your referral link to clipboard")
             }
             .padding(.horizontal)
             
@@ -97,9 +104,11 @@ struct InviteFriendsView: View {
                 .padding(.bottom, 32)
         }
         .navigationBarHidden(true)
+        .overlay(
+            InviteToastView(message: "✅ Link copied to clipboard!", isVisible: $showToast) 
+        )
+        .alert(isPresented: $showAlert) {
+                   Alert(title: Text("Sharing is currently disabled"), message: Text("You can't share links at this time."), dismissButton: .default(Text("OK")))
+               }
     }
 }
-
-#Preview {
-    InviteFriendsView()
-} 

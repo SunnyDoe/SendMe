@@ -203,6 +203,3 @@ final class PasswordView: UIViewController {
     }
 }
 
-#Preview {
-    UINavigationController(rootViewController: PasswordView(email: "test@example.com"))
-} 

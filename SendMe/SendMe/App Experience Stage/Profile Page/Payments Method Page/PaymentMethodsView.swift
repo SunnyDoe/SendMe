@@ -93,6 +93,3 @@ extension Notification.Name {
     static let cardAdded = Notification.Name("cardAdded")
 }
 
-#Preview {
-    PaymentMethodsView(viewModel: PaymentMethodsViewModel())
-} 

@@ -2,7 +2,7 @@ import Foundation
 import FirebaseAuth
 import Combine
 
-class ChangePasswordViewModel: ObservableObject {
+final class ChangePasswordViewModel: ObservableObject {
     @Published var currentPassword = ""
     @Published var newPassword = ""
     @Published var confirmPassword = ""
@@ -22,9 +22,9 @@ class ChangePasswordViewModel: ObservableObject {
     }
     
     var isFormValid: Bool {
-        !currentPassword.isEmpty && 
-        !newPassword.isEmpty && 
-        !confirmPassword.isEmpty && 
+        !currentPassword.isEmpty &&
+        !newPassword.isEmpty &&
+        !confirmPassword.isEmpty &&
         passwordCriteria.allSatisfy { $0.value } &&
         newPassword == confirmPassword
     }
@@ -103,7 +103,6 @@ class ChangePasswordViewModel: ObservableObject {
     }
 }
 
-// MARK: - Notification Extension
 extension Notification.Name {
     static let passwordChanged = Notification.Name("passwordChanged")
-} 
+}

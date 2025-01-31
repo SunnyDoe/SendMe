@@ -1,6 +1,6 @@
 import Foundation
 
-class SecurityNotificationsViewModel: ObservableObject {
+final class SecurityNotificationsViewModel: ObservableObject {
     private enum UserDefaultsKeys {
         static let isPushEnabled = "isPushEnabled"
         static let isTextEnabled = "isTextEnabled"
@@ -49,4 +49,4 @@ class SecurityNotificationsViewModel: ObservableObject {
         showFaceIDAlert = true
     }
     
-} 
+}

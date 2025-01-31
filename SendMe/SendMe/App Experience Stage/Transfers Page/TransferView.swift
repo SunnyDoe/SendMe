@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TransferView: View {
     @StateObject private var viewModel = TransferViewModel()
+    @State private var showingErrorAlert = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -25,6 +26,14 @@ struct TransferView: View {
             if viewModel.isLoading {
                 ProgressView()
                     .padding()
+            } else if let errorMessage = viewModel.error {
+                            Text(errorMessage)
+                                .font(.caption)
+                                .foregroundColor(.red)
+                                .padding()
+                                .background(Color.yellow.opacity(0.2))
+                                .cornerRadius(8)
+                                .padding(.horizontal)
             } else {
                 List(viewModel.filteredUsers) { user in
                     NavigationLink(destination: ChatView(user: user)) {
@@ -66,7 +75,15 @@ struct TransferView: View {
         .task {
             await viewModel.fetchUsers()
         }
-    }
+        .alert(isPresented: $showingErrorAlert) {
+                    Alert(
+                        title: Text("Error"),
+                        message: Text(viewModel.error ?? "Unknown error occurred"),
+                        dismissButton: .default(Text("OK"))
+                    )
+                }
+            }
+    
     
     private func formatDate(_ date: Date) -> String {
         let formatter = RelativeDateTimeFormatter()

@@ -1,6 +1,6 @@
 import Foundation
 
-class PaymentMethodsViewModel: ObservableObject {
+final class PaymentMethodsViewModel: ObservableObject {
     @Published var savedCards: [SavedCard] = []
     private var notificationObserver: NSObjectProtocol?
     
@@ -19,7 +19,7 @@ class PaymentMethodsViewModel: ObservableObject {
         }
     }
     
-     func loadSavedCards() {
+    func loadSavedCards() {
         do {
             savedCards = try KeychainManager.shared.loadCards()
         } catch {
@@ -47,4 +47,4 @@ class PaymentMethodsViewModel: ObservableObject {
             NotificationCenter.default.removeObserver(observer)
         }
     }
-} 
+}

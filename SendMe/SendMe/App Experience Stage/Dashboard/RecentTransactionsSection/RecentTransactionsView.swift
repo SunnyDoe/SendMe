@@ -20,4 +20,4 @@ struct RecentTransactionsSection: View {
         }
         .padding()
     }
-} 
+}

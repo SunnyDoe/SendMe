@@ -3,11 +3,11 @@ import FirebaseAuth
 import FirebaseFirestore
 
 @MainActor
-class ChatViewModel: ObservableObject {
+final class ChatViewModel: ObservableObject {
     @Published var messages: [Message] = []
     @Published var messageText = ""
     @Published var isLoading = false
-    @Published var error: Error?
+    @Published var errorMessage: String?
     
     private let db = Firestore.firestore()
     private var userId: String = ""
@@ -20,7 +20,7 @@ class ChatViewModel: ObservableObject {
             let snapshot = try await db.collection("chats")
                 .document(userId)
                 .collection("messages")
-                .order(by: "timestamp", descending: false) 
+                .order(by: "timestamp", descending: false)
                 .getDocuments()
             
             self.messages = snapshot.documents.compactMap { document in
@@ -31,8 +31,7 @@ class ChatViewModel: ObservableObject {
                 await addInitialMessage(for: userId)
             }
         } catch {
-            self.error = error
-            print("Error fetching messages: \(error.localizedDescription)")
+            self.errorMessage = "Failed to load messages. Please try again later."
         }
         
         isLoading = false
@@ -62,7 +61,7 @@ class ChatViewModel: ObservableObject {
                 await fetchMessages(for: userId)
             }
         } catch {
-            print("Error adding initial message: \(error.localizedDescription)")
+            self.errorMessage = "Failed to load initial message. Please try again later."
         }
     }
     
@@ -93,12 +92,12 @@ class ChatViewModel: ObservableObject {
                 .document(userId)
                 .updateData([
                     "recentMessage": text,
-                    "recentMessageTime": messageData["timestamp"]
+                    "recentMessageTime": messageData["timestamp"] as Any
                 ])
+            self.errorMessage = nil
             
         } catch {
-            self.error = error
-            print("Error sending message: \(error.localizedDescription)")
+            self.errorMessage = "Failed to send message. Please try again later."
         }
     }
 }

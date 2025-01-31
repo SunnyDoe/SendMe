@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ActionButtonsRow: View {
     let addMoney: () -> Void
-
+    
     
     var body: some View {
         HStack() {
@@ -11,4 +11,4 @@ struct ActionButtonsRow: View {
         .padding(.horizontal)
         .frame(width: 120)
     }
-} 
+}

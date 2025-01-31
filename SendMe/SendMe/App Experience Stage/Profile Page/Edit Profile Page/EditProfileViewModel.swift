@@ -22,7 +22,7 @@ final class EditProfileViewModel: ObservableObject {
     }
     
     func updateProfile(firstName: String? = nil, lastName: String? = nil, 
-                      email: String? = nil, country: String? = nil) {
+                       email: String? = nil, country: String? = nil) {
         state.isLoading = true
         
         let updatedFirstName = firstName ?? state.firstName

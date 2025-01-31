@@ -1,6 +1,6 @@
 import SwiftUI
 
-class SendFeedbackViewModel: ObservableObject {
+final class SendFeedbackViewModel: ObservableObject {
     @Published var feedbackText = ""
     @Published var isEditing = false
     @Published var isSending = false
@@ -35,4 +35,4 @@ class SendFeedbackViewModel: ObservableObject {
             }
         }
     }
-} 
+}

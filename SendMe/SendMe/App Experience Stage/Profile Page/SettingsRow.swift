@@ -24,8 +24,8 @@ struct SettingsRow: View {
             
             Spacer()
             
-          
-            }
-        .padding(.vertical, 4)
+            
         }
+        .padding(.vertical, 4)
     }
+}

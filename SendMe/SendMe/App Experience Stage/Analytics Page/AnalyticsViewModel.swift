@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 
-class AnalyticsViewModel: ObservableObject {
+final class AnalyticsViewModel: ObservableObject {
     @Published var totalSpent: Double = 0
     @Published var categoryTotalSpent: Double = 0
     @Published var monthlyData: [MonthlySpending] = []

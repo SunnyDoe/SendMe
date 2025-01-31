@@ -3,11 +3,12 @@ import FirebaseAuth
 import FirebaseFirestore
 
 @MainActor
-class SendMoneyViewModel: ObservableObject {
+final class SendMoneyViewModel: ObservableObject {
     @Published var amount: String = ""
     @Published var note: String = ""
     @Published var balance: Double = 0
     @Published var validationError: String?
+    @Published var genericErrorMessage: String?
     
     private let db = Firestore.firestore()
     
@@ -54,13 +55,15 @@ class SendMoneyViewModel: ObservableObject {
                 self.balance = amount
             }
         } catch {
-            print("Error fetching balance: \(error.localizedDescription)")
+            genericErrorMessage = "Unable to retrieve balance. Please try again later."
         }
     }
     
     func sendMoney(to userId: String) async {
-        guard let amount = Double(amount) else { return }
-        
+        guard let amount = Double(amount) else {
+            genericErrorMessage = "Please enter a valid amount to send."
+            return
+        }
         let messageData: [String: Any] = [
             "type": "moneySent",
             "amount": amount,
@@ -82,7 +85,7 @@ class SendMoneyViewModel: ObservableObject {
                 .document(userId)
                 .updateData([
                     "recentMessage": recentMessage,
-                    "recentMessageTime": messageData["timestamp"]
+                    "recentMessageTime": messageData["timestamp"] as Any
                 ])
             
             try await db.collection("appdata")
@@ -92,7 +95,7 @@ class SendMoneyViewModel: ObservableObject {
                 ])
             
         } catch {
-            print("Error sending money: \(error.localizedDescription)")
+            genericErrorMessage = "Error sending money. Please try again later."
         }
     }
-} 
+}

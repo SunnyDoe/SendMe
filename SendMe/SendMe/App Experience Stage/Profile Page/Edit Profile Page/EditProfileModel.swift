@@ -19,4 +19,4 @@ struct EditProfileModel {
         isLoading: false,
         error: nil
     )
-} 
+}

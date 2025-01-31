@@ -6,7 +6,7 @@ struct PaymentSelectionView: View {
     @State private var selectedCard: SavedCard?
     @State private var isLoading = false
     @State private var showSuccessMessage = false
-
+    
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -46,7 +46,7 @@ struct PaymentSelectionView: View {
                     .padding(.horizontal, 24)
             }
             .padding(.vertical, 24)
-
+            
             List(viewModel.savedCards) { card in
                 Button(action: { selectedCard = card }) {
                     HStack(spacing: 16) {
@@ -80,12 +80,12 @@ struct PaymentSelectionView: View {
                         .fill(Color.gray.opacity(0.1))
                         .padding(.vertical, 4)
                 )
- 
+                
             }
             .padding(.top, 8)
-
+            
             Spacer()
-
+            
             VStack(spacing: 16) {
                 HStack(spacing: 8) {
                     Image(systemName: "lock.fill")
@@ -94,7 +94,7 @@ struct PaymentSelectionView: View {
                 }
                 .foregroundColor(.gray)
                 .font(.system(size: 13))
-
+                
                 Button(action: {
                     guard let card = selectedCard else { return }
                     processPayment(for: card)
@@ -118,7 +118,7 @@ struct PaymentSelectionView: View {
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 32)
- 
+            
         }
         .background(Color(.systemGroupedBackground))
         .alert(isPresented: $showSuccessMessage) {
@@ -129,7 +129,7 @@ struct PaymentSelectionView: View {
             )
         }
     }
-
+    
     private func processPayment(for card: SavedCard) {
         isLoading = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -137,8 +137,4 @@ struct PaymentSelectionView: View {
             showSuccessMessage = true
         }
     }
-}
-
-#Preview {
-    PaymentSelectionView(viewModel: PaymentMethodsViewModel())
 }

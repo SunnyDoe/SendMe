@@ -40,10 +40,10 @@ extension UserDefaults {
                let level = PrivacySettingsModel.PrivacyLevel(rawValue: savedValue) {
                 return level
             }
-            return .public 
+            return .public
         }
         set {
             set(newValue.rawValue, forKey: Keys.privacyLevel)
         }
     }
-} 
+}

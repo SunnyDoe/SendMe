@@ -36,14 +36,14 @@ struct ChangePasswordView: View {
                 
                 ForEach(Array(viewModel.passwordCriteria.keys), id: \.self) { criteria in
                     HStack(spacing: 12) {
-                        Image(systemName: viewModel.passwordCriteria[criteria] ?? false ? 
+                        Image(systemName: viewModel.passwordCriteria[criteria] ?? false ?
                               "checkmark.circle.fill" : "xmark.circle.fill")
-                            .foregroundColor(viewModel.passwordCriteria[criteria] ?? false ? 
-                                           .green : .red)
+                        .foregroundColor(viewModel.passwordCriteria[criteria] ?? false ?
+                            .green : .red)
                         Text(criteria.rawValue)
                             .font(.subheadline)
-                            .foregroundColor(viewModel.passwordCriteria[criteria] ?? false ? 
-                                           .green : .red)
+                            .foregroundColor(viewModel.passwordCriteria[criteria] ?? false ?
+                                .green : .red)
                     }
                 }
             }
@@ -101,9 +101,3 @@ struct ChangePasswordView: View {
         }
     }
 }
-
-#Preview {
-    NavigationView {
-        ChangePasswordView()
-    }
-} 

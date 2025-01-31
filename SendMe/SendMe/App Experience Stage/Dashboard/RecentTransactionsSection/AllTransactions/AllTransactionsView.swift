@@ -42,4 +42,4 @@ struct AllTransactionsView: View {
             await viewModel.fetchTransactions()
         }
     }
-} 
+}

@@ -147,4 +147,4 @@ struct AddMoneyView: View {
 
 #Preview {
     AddMoneyView()
-} 
+}

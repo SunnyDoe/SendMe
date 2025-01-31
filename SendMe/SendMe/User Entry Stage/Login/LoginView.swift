@@ -201,6 +201,3 @@ final class LoginView: UIViewController {
     }
 }
 
-#Preview {
-    LoginView()
-}

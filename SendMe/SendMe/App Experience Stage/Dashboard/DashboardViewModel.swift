@@ -1,7 +1,7 @@
 import SwiftUI
 import FirebaseFirestore
 
-class DashboardViewModel: ObservableObject {
+final class DashboardViewModel: ObservableObject {
     @Published var balance: Double = 0
     @Published var monthlySpending: Int = 0
     @Published var selectedTab: Int = 0
@@ -59,8 +59,6 @@ class DashboardViewModel: ObservableObject {
             let transactions = snapshot.documents.compactMap { document in
                 Transaction(document: document)
             }
-            
-            print("Fetched transactions count: \(transactions.count)")
             self.recentTransactions = transactions
             
         } catch {
@@ -88,4 +86,4 @@ class DashboardViewModel: ObservableObject {
     func addMoney() {
         showAddMoney = true
     }
-} 
+}

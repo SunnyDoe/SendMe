@@ -2,10 +2,10 @@ import SwiftUI
 import FirebaseFirestore
 
 @MainActor
-class TransferViewModel: ObservableObject {
+final class TransferViewModel: ObservableObject {
     @Published var users: [User] = []
     @Published var isLoading = false
-    @Published var error: Error?
+    @Published var error: String?
     @Published var searchText = ""
     
     private let db = Firestore.firestore()
@@ -32,8 +32,7 @@ class TransferViewModel: ObservableObject {
             }
             
         } catch {
-            self.error = error
-            print("Error fetching users: \(error.localizedDescription)")
+            self.error = "Error fetching users: \(error.localizedDescription)"
         }
         
         isLoading = false

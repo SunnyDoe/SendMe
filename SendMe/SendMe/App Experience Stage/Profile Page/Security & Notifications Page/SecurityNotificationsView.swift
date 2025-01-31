@@ -84,9 +84,3 @@ struct SecurityNotificationsView: View {
         }
     }
 }
-
-#Preview {
-    NavigationView {
-        SecurityNotificationsView()
-    }
-} 

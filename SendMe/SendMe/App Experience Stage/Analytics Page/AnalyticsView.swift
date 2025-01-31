@@ -3,7 +3,7 @@ import Charts
 
 
 struct AnalyticsView: View {
-    @ObservedObject private var viewModel = AnalyticsViewModel()
+    @StateObject private var viewModel = AnalyticsViewModel()
     @State private var selectedTimeRange: TimeRange = .overall
     
     var body: some View {
@@ -25,7 +25,7 @@ struct AnalyticsView: View {
                                         .background(
                                             selectedTimeRange == range ?
                                             Color.blue :
-                                            Color.gray.opacity(0.1)
+                                                Color.gray.opacity(0.1)
                                         )
                                         .cornerRadius(20)
                                 }
@@ -141,9 +141,4 @@ struct AnalyticsView: View {
             }
         }
     }
-}
-
-
-#Preview {
-    AnalyticsView()
 }

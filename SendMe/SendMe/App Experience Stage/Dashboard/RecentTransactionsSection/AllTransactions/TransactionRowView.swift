@@ -4,6 +4,7 @@ struct TransactionRow: View {
     let transaction: Transaction
     @State private var image: UIImage?
     @State private var isLoading = false
+    @State private var loadingError = false
     
     var body: some View {
         HStack {
@@ -40,6 +41,11 @@ struct TransactionRow: View {
         .onAppear {
             loadImage()
         }
+        .alert(isPresented: $loadingError) {
+            Alert(title: Text("Image Load Failed"),
+                  message: Text("There was an error loading the image."),
+                  dismissButton: .default(Text("OK")))
+        }
     }
     
     private func loadImage() {
@@ -50,21 +56,18 @@ struct TransactionRow: View {
         
         isLoading = true
         
-        URLSession.shared.dataTask(with: imageURL) { data, response, error in
-            isLoading = false
-            
-            if let error = error {
-                print("Error loading image: \(error.localizedDescription)")
-                return
-            }
-            
-            guard let data = data, let loadedImage = UIImage(data: data) else {
-                return
-            }
-            
-            DispatchQueue.main.async {
+        Task {
+            do {
+                let (data, _) = try await URLSession.shared.data(from: imageURL)
+                guard let loadedImage = UIImage(data: data) else {
+                    throw URLError(.badServerResponse)
+                }
                 self.image = loadedImage
+            } catch {
+                loadingError = true
+                print("Error loading image: \(error.localizedDescription)")
             }
-        }.resume()
+            isLoading = false
+        }
     }
-} 
+}
