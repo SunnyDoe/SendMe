@@ -43,6 +43,7 @@ class LoginViewModel {
             }
         }
     }
+    
         func getStoredCredentials() -> (email: String, password: String)? {
             if let email = keychain.get(forKey: "userEmail"),
                let password = keychain.get(forKey: "userPassword") {
