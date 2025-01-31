@@ -13,7 +13,6 @@ struct InviteFriendsView: View {
                     }
                     .foregroundColor(.blue)
                 }
-                .accessibilityLabel("Go back")
                 
                 Spacer()
                 
@@ -24,7 +23,6 @@ struct InviteFriendsView: View {
                 Text("Invite friends and\nget $25")
                     .font(.system(size: 40, weight: .bold))
                     .multilineTextAlignment(.center)
-                    .accessibilityLabel("Invite friends and get twenty five dollars")
                 
                 Text("You can add another account later on, too.")
                     .foregroundColor(.gray)
@@ -35,7 +33,6 @@ struct InviteFriendsView: View {
             VStack(spacing: 12) {
                 Text("1 out of 3")
                     .font(.system(size: 17, weight: .semibold))
-                    .accessibilityLabel("Progress: one out of three invites")
                 
                 Text("Invite friends and earn reward when 3\nfriends send over $100 in one go.")
                     .multilineTextAlignment(.center)
@@ -72,7 +69,6 @@ struct InviteFriendsView: View {
                         .background(Color.blue)
                         .cornerRadius(25)
                 }
-                .accessibilityHint("Share your referral link with friends")
                 
                 Button(action: {}) {
                     Text("Copy link")
@@ -86,7 +82,6 @@ struct InviteFriendsView: View {
                                 .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                         )
                 }
-                .accessibilityHint("Copy your referral link to clipboard")
             }
             .padding(.horizontal)
             
