@@ -18,6 +18,14 @@ SendMe is a Swift-based iOS application designed to facilitate seamless money tr
 
 The app follows the MVVM (Model-View-ViewModel) pattern, ensuring a clear separation of concerns and making the codebase more maintainable and testable.
 
+## 🔧 Requirements
+
+- **iOS 16+** (Supports iOS 17+ features where available)
+- **Xcode 15+**
+- **Swift 5.9+**
+- **CocoaPods** (if using third-party dependencies)
+- **Internet Connection** (For real-time updates and API calls)
+
 ## 🛠️ Key Components
 
 - **ViewModels**: Handle business logic and data manipulation.
