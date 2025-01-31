@@ -35,4 +35,4 @@ final class SendFeedbackViewModel: ObservableObject {
             }
         }
     }
-} 
+}

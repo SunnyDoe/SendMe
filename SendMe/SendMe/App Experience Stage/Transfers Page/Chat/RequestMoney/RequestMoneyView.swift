@@ -167,4 +167,4 @@ struct RequestMoneyView: View {
             await viewModel.fetchBalance()
         }
     }
-} 
+}

@@ -31,4 +31,4 @@ struct MoneySentBubble: View {
         .cornerRadius(20)
         .padding(.horizontal)
     }
-} 
+}

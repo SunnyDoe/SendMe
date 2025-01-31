@@ -3,7 +3,7 @@ import FirebaseAuth
 import FirebaseFirestore
 
 @MainActor
-class RequestMoneyViewModel: ObservableObject {
+final class RequestMoneyViewModel: ObservableObject {
     @Published var amount: String = ""
     @Published var note: String = ""
     @Published var balance: Double = 0
@@ -87,4 +87,4 @@ class RequestMoneyViewModel: ObservableObject {
             print("Error sending money request: \(error.localizedDescription)")
         }
     }
-} 
+}

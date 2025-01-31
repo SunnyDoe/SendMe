@@ -88,4 +88,4 @@ final class DashboardViewModel: ObservableObject {
     func addMoney() {
         showAddMoney = true
     }
-} 
+}

@@ -8,7 +8,7 @@ struct ChatView: View {
     @State private var showRequestMoneyView = false
     @State private var showSendMoneyView = false
     @State private var shouldRefresh = false
-
+    
     
     var body: some View {
         VStack(spacing: 0) {
@@ -53,6 +53,16 @@ struct ChatView: View {
             .background(Color(.systemBackground))
             .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
             
+            if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+                    .font(.caption)
+                    .foregroundColor(.red)
+                    .padding()
+                    .background(Color.yellow.opacity(0.2))
+                    .cornerRadius(8)
+                    .padding(.horizontal)
+            }
+            
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: 12) {
@@ -92,7 +102,7 @@ struct ChatView: View {
             .background(Color(.systemBackground))
         }
         .navigationBarHidden(true)
-        .ignoresSafeArea(.keyboard) 
+        .ignoresSafeArea(.keyboard)
         .task {
             await viewModel.fetchMessages(for: user.id)
         }

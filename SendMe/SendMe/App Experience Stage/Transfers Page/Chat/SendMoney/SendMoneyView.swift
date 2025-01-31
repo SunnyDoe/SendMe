@@ -118,6 +118,13 @@ struct SendMoneyView: View {
                                 .padding(.horizontal)
                         }
                         
+                        if let errorMessage = viewModel.genericErrorMessage {
+                            Text(errorMessage)
+                                .font(.caption)
+                                .foregroundColor(.red)
+                                .padding(.horizontal)
+                        }
+                        
                         HStack {
                             Text("Balance: $\(String(format: "%.2f", viewModel.balance))")
                                 .font(.subheadline)
@@ -168,4 +175,4 @@ struct SendMoneyView: View {
             await viewModel.fetchBalance()
         }
     }
-} 
+}

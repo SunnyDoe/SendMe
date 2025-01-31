@@ -49,4 +49,4 @@ final class SecurityNotificationsViewModel: ObservableObject {
         showFaceIDAlert = true
     }
     
-} 
+}
