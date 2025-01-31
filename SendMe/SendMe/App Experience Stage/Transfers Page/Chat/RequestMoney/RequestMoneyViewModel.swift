@@ -80,7 +80,7 @@ final class RequestMoneyViewModel: ObservableObject {
                 .document(userId)
                 .updateData([
                     "recentMessage": recentMessage,
-                    "recentMessageTime": messageData["timestamp"]
+                    "recentMessageTime": messageData["timestamp"] as Any
                 ])
             
         } catch {

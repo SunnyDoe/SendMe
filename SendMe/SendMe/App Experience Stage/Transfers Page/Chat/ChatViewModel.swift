@@ -92,7 +92,7 @@ final class ChatViewModel: ObservableObject {
                 .document(userId)
                 .updateData([
                     "recentMessage": text,
-                    "recentMessageTime": messageData["timestamp"]
+                    "recentMessageTime": messageData["timestamp"] as Any
                 ])
             self.errorMessage = nil
             

@@ -59,8 +59,6 @@ final class DashboardViewModel: ObservableObject {
             let transactions = snapshot.documents.compactMap { document in
                 Transaction(document: document)
             }
-            
-            print("Fetched transactions count: \(transactions.count)")
             self.recentTransactions = transactions
             
         } catch {

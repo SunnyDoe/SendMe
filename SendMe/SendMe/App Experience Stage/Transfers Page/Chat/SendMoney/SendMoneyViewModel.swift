@@ -85,7 +85,7 @@ final class SendMoneyViewModel: ObservableObject {
                 .document(userId)
                 .updateData([
                     "recentMessage": recentMessage,
-                    "recentMessageTime": messageData["timestamp"]
+                    "recentMessageTime": messageData["timestamp"] as Any
                 ])
             
             try await db.collection("appdata")
