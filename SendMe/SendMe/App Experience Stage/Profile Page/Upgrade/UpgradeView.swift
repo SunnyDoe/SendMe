@@ -78,6 +78,3 @@ struct UpgradeView: View {
     }
 }
 
-#Preview {
-    UpgradeView()
-} 

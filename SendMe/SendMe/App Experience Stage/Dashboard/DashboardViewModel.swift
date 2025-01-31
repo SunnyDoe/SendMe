@@ -1,7 +1,7 @@
 import SwiftUI
 import FirebaseFirestore
 
-class DashboardViewModel: ObservableObject {
+final class DashboardViewModel: ObservableObject {
     @Published var balance: Double = 0
     @Published var monthlySpending: Int = 0
     @Published var selectedTab: Int = 0

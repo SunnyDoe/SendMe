@@ -1,7 +1,7 @@
 import Foundation
 
 @MainActor
-class AddCardViewModel: ObservableObject {
+final class AddCardViewModel: ObservableObject {
     @Published var cardName = ""
     @Published var cardNumber = ""
     @Published var expiryDate = ""
@@ -28,19 +28,19 @@ class AddCardViewModel: ObservableObject {
         validateCVC()
         
         isFormValid = cardNameError == nil &&
-                     cardNumberError == nil &&
-                     expiryDateError == nil &&
-                     cvcError == nil &&
-                     !cardName.isEmpty &&
-                     !cardNumber.isEmpty &&
-                     !expiryDate.isEmpty &&
-                     !cvc.isEmpty
+        cardNumberError == nil &&
+        expiryDateError == nil &&
+        cvcError == nil &&
+        !cardName.isEmpty &&
+        !cardNumber.isEmpty &&
+        !expiryDate.isEmpty &&
+        !cvc.isEmpty
     }
     
     @MainActor
     private func validateCardName() {
         cardNameError = cardName.isEmpty ? "Name is required" :
-                       cardName.count < 2 ? "Name is too short" : nil
+        cardName.count < 2 ? "Name is too short" : nil
     }
     
     @MainActor
@@ -87,7 +87,7 @@ class AddCardViewModel: ObservableObject {
     @MainActor
     private func validateCVC() {
         cvcError = cvc.isEmpty ? "CVC is required" :
-                  !cvc.matches(pattern: cvcRegex) ? "Invalid CVC" : nil
+        !cvc.matches(pattern: cvcRegex) ? "Invalid CVC" : nil
     }
     
     private func isLuhnValid(_ number: String) -> Bool {
@@ -169,4 +169,4 @@ private extension String {
     func matches(pattern: String) -> Bool {
         return range(of: pattern, options: .regularExpression) != nil
     }
-} 
+}

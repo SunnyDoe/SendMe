@@ -33,7 +33,7 @@ struct ProfileView: View {
                 NavigationLink(destination: UpgradeView()) {
                     SettingsRow(icon: "star", title: "Upgrade", iconColor: .yellow)
                         .accessibilityLabel("Upgrade to premium")
-
+                    
                 }
                 
                 NavigationLink(destination: EditProfileView()) {
@@ -44,7 +44,7 @@ struct ProfileView: View {
                 NavigationLink(destination: PaymentMethodsView(viewModel: PaymentMethodsViewModel())) {
                     SettingsRow(icon: "creditcard", title: "Payment methods")
                         .accessibilityLabel("Add payment methods")
-
+                    
                 }
                 
                 NavigationLink(destination: SecurityNotificationsView()) {
@@ -109,11 +109,5 @@ struct ProfileView: View {
         .sheet(isPresented: $viewModel.showingPrivacySettings) {
             PrivacySettingsView()
         }
-    }
-}
-
-#Preview {
-    NavigationView {
-        ProfileView()
     }
 }

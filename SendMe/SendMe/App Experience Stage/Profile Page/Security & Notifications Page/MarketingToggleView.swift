@@ -22,4 +22,4 @@ struct MarketingToggleView: View {
                 .padding(.leading, 28)
         }
     }
-} 
+}

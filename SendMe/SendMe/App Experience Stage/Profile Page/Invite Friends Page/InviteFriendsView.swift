@@ -16,7 +16,7 @@ struct InviteFriendsView: View {
                 .accessibilityLabel("Go back")
                 
                 Spacer()
-
+                
             }
             .padding(.horizontal)
             
@@ -99,7 +99,3 @@ struct InviteFriendsView: View {
         .navigationBarHidden(true)
     }
 }
-
-#Preview {
-    InviteFriendsView()
-} 

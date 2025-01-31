@@ -52,4 +52,4 @@ struct MonthlyExpenseSection: View {
         .cornerRadius(12)
         .shadow(radius: 2)
     }
-} 
+}

@@ -7,4 +7,4 @@ struct SavedCard: Identifiable, Codable {
     let expiryDate: String
 }
 
-extension CardBrand: Codable { } 
+extension CardBrand: Codable { }

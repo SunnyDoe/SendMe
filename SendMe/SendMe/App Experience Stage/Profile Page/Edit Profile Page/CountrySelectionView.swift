@@ -50,8 +50,3 @@ struct CountrySelectionView: View {
     }
 }
 
-#Preview {
-    NavigationView {
-        CountrySelectionView(selectedCountry: .constant("United States"))
-    }
-}

@@ -49,25 +49,25 @@ struct TransactionRow: View {
     }
     
     private func loadImage() {
-            guard let imageURLString = transaction.imageURL,
-                  let imageURL = URL(string: imageURLString) else {
-                return
-            }
-            
-            isLoading = true
-            
-            Task {
-                do {
-                    let (data, _) = try await URLSession.shared.data(from: imageURL)
-                    guard let loadedImage = UIImage(data: data) else {
-                        throw URLError(.badServerResponse)
-                    }
-                    self.image = loadedImage
-                } catch {
-                    loadingError = true
-                    print("Error loading image: \(error.localizedDescription)")
+        guard let imageURLString = transaction.imageURL,
+              let imageURL = URL(string: imageURLString) else {
+            return
+        }
+        
+        isLoading = true
+        
+        Task {
+            do {
+                let (data, _) = try await URLSession.shared.data(from: imageURL)
+                guard let loadedImage = UIImage(data: data) else {
+                    throw URLError(.badServerResponse)
                 }
-                isLoading = false
+                self.image = loadedImage
+            } catch {
+                loadingError = true
+                print("Error loading image: \(error.localizedDescription)")
             }
+            isLoading = false
         }
     }
+}

@@ -26,7 +26,7 @@ struct RatingView: View {
             }
             .padding(.top, 32)
             
-            Spacer() 
+            Spacer()
             
             if let message = submissionMessage {
                 Text(message)
@@ -70,6 +70,3 @@ struct RatingView: View {
     }
 }
 
-#Preview {
-    RatingView()
-}

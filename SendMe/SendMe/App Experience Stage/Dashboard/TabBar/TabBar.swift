@@ -53,4 +53,4 @@ let tabBarItems = [
     TabBarItemModel(icon: "arrow.left.arrow.right", title: "Transfer"),
     TabBarItemModel(icon: "chart.bar.fill", title: "Analytics"),
     TabBarItemModel(icon: "person.fill", title: "Profile")
-] 
+]

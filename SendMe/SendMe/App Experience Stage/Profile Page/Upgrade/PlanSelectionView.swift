@@ -5,7 +5,7 @@ struct PlanSelectionView: View {
     @State private var selectedPlan: PlanType = .yearly
     @ObservedObject private var paymentMethodsViewModel = PaymentMethodsViewModel()
     @State private var showingPaymentSelection = false
-
+    
     var body: some View {
         VStack(spacing: 24) {
             Text("Choose your plan")
@@ -68,7 +68,3 @@ struct PlanSelectionView: View {
         }
     }
 }
-
-#Preview {
-    PlanSelectionView()
-} 

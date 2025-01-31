@@ -10,7 +10,7 @@ enum CardBrand: String {
     var logo: Image {
         switch self {
         case .visa:
-            return Image("visa_logo") 
+            return Image("visa_logo")
         case .mastercard:
             return Image("mastercard_logo")
         case .amex:
@@ -38,4 +38,4 @@ enum CardBrand: String {
             return .unknown
         }
     }
-} 
+}

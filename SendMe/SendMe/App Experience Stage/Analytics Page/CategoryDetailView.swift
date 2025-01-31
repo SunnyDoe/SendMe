@@ -81,7 +81,7 @@ struct CategoryDetailView: View {
                                 .background(
                                     selectedTimeRange == range ?
                                     Color.blue :
-                                    Color.gray.opacity(0.1)
+                                        Color.gray.opacity(0.1)
                                 )
                                 .cornerRadius(20)
                         }
@@ -137,4 +137,4 @@ struct CategoryDetailView: View {
         }
         return dateString
     }
-} 
+}

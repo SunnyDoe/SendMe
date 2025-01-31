@@ -37,4 +37,4 @@ final class PrivacySettingsViewModel: ObservableObject {
 
 extension Notification.Name {
     static let privacyLevelDidChange = Notification.Name("privacyLevelDidChange")
-} 
+}
