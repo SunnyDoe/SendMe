@@ -13,7 +13,7 @@ SendMe is a Swift-based iOS application designed to facilitate seamless money tr
 - ⏱️ **Real-time Updates**: Get real-time updates on transactions and balances.
 - 🏠 **Profile Customization**: Manage your **User Data, Payment Methods, Pro Status Upgrades, Marketing Notifications, Privacy Settings,** and more.
 - 🤝 **Invite Friends**: Share a unique invite link with friends and earn rewards.
-- 
+  
 ## 🏗️ Architecture
 
 The app follows the MVVM (Model-View-ViewModel) pattern, ensuring a clear separation of concerns and making the codebase more maintainable and testable.
