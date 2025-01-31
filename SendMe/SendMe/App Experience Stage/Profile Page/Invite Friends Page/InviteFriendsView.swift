@@ -2,6 +2,9 @@ import SwiftUI
 
 struct InviteFriendsView: View {
     @Environment(\.dismiss) private var dismiss
+    @StateObject private var viewModel = InviteFriendsViewModel()
+    @State private var showToast = false
+    @State private var showAlert = false
     
     var body: some View {
         VStack(spacing: 24) {
@@ -60,7 +63,9 @@ struct InviteFriendsView: View {
             Spacer()
             
             VStack(spacing: 12) {
-                Button(action: {}) {
+                Button(action: {
+                    showAlert = true 
+                }) {
                     Text("Share your link")
                         .font(.system(size: 17, weight: .semibold))
                         .foregroundColor(.white)
@@ -70,7 +75,14 @@ struct InviteFriendsView: View {
                         .cornerRadius(25)
                 }
                 
-                Button(action: {}) {
+                Button(action: {
+                    viewModel.copyLink()
+                    showToast = true
+                    Task {
+                        try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
+                        showToast = false
+                    }
+                }) {
                     Text("Copy link")
                         .font(.system(size: 17, weight: .semibold))
                         .foregroundColor(.blue)
@@ -92,5 +104,11 @@ struct InviteFriendsView: View {
                 .padding(.bottom, 32)
         }
         .navigationBarHidden(true)
+        .overlay(
+            InviteToastView(message: "✅ Link copied to clipboard!", isVisible: $showToast) 
+        )
+        .alert(isPresented: $showAlert) {
+                   Alert(title: Text("Sharing is currently disabled"), message: Text("You can't share links at this time."), dismissButton: .default(Text("OK")))
+               }
     }
 }
